@@ -1,6 +1,6 @@
 const { User } = require('../../Model/User');
 const { uploadImageToFirebase } = require('../../Firebase/uploadImage');
-const { isPasswordValid, generatePasswordHash } = require('../../Utils/passwordUtils');
+const { isPasswordValid, generatePasswordHash } = require('../../Utils/password');
 
 
 const updateProfile = async (req, res) => {
