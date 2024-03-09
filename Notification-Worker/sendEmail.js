@@ -1,6 +1,7 @@
 // notification-worker/sendEmail.js
 const nodemailer = require('nodemailer');
 const SendinBlueTransport = require('nodemailer-sendinblue-transport');
+require('dotenv').config(); 
 
 const transporter = nodemailer.createTransport(new SendinBlueTransport({
   apiKey: process.env.SENDINBLUE_API_KEY,

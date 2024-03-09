@@ -8,7 +8,7 @@ const compression = require('compression'); // Compression middleware for gzip o
 const mongoSanitize = require('express-mongo-sanitize'); // Sanitize data to prevent MongoDB Operator Injection
 
 // Routes
-// const userRoutes = require('./Routes/userRoutes');
+const userRoutes = require('./Routes/userRoute');
 
 
 // Connect to Database
@@ -31,7 +31,7 @@ const limiter = rateLimit({
 app.use(limiter);
 
 // API Routes
-// app.use('/api/users', userRoutes);
+app.use('/api/users', userRoutes);
 
 // Error handling middleware (Example)
 app.use((err, req, res, next) => {
