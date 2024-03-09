@@ -2,8 +2,7 @@
 const jwt = require('jsonwebtoken');
 
 const verifyToken = (role) => (req, res, next) => {
-  let token = req.headers['Authorization'];
-  
+  let token = req.headers['authorization'];
   if (!token) {
     return res.status(403).send({ message: 'A token is required for authentication' });
   }
@@ -40,6 +39,6 @@ const verifyToken = (role) => (req, res, next) => {
 
 module.exports = {
   verifyTokenAdmin: verifyToken('admin'),
-  verifyTokenUser: verifyToken('passenger'),
+  verifyTokenUser: verifyToken('user'),
   verifyTokenDriver: verifyToken('driver'),
 };

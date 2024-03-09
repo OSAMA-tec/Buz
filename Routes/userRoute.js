@@ -25,8 +25,8 @@ router.post('/forgot/password', forgotPassword);                     // ----Work
 router.post('/verify/otp', verifyOTP);                               // ----Working
 router.post('/update/password', updatePassword);                     // ----Working
 //Profile------User
-router.get('/profile',verifyTokenUser, getUser);                    // ----
-router.post('/profile',verifyTokenUser, upload.single('profilePicture'), updateProfile);                     // ----
+router.get('/profile',verifyTokenUser, getUser);                    // -----Working
+router.post('/profile',verifyTokenUser, upload.single('profilePicture'), updateProfile);                     // ----Working
 
 
 module.exports = router;
