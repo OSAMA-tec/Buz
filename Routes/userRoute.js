@@ -7,6 +7,7 @@ const multer = require('multer');
 
 const { signup, signin } = require('../Controller/User/Registration');
 const { forgotPassword, updatePassword,verifyOTP } = require('../Controller/User/forgetPassword');
+const  {updateProfile,getUser}= require('../Controller/User/profileUser');
 
 
 
@@ -24,7 +25,8 @@ router.post('/forgot/password', forgotPassword);                     // ----Work
 router.post('/verify/otp', verifyOTP);                               // ----Working
 router.post('/update/password', updatePassword);                     // ----Working
 //Profile------User
-router.post('/profile',verifyTokenUser,  upload.single('profilePicture'),updatePassword);                     // ----
+router.get('/profile',verifyTokenUser, getUser);                    // ----
+router.post('/profile',verifyTokenUser, upload.single('profilePicture'), updateProfile);                     // ----
 
 
 module.exports = router;
