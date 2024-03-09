@@ -2,7 +2,7 @@
 const jwt = require('jsonwebtoken');
 const config = require('../Config/config');
 
-const verifyToken = (req, res, next) => {
+const verifyToken = (role) => (req, res, next) => {
   let token = req.headers['authorization'];
   
   if (!token) {
@@ -14,36 +14,33 @@ const verifyToken = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, config.jwtSecret);
+    let secretKey;
+    switch (role) {
+      case 'admin':
+        secretKey = process.env.secretAdmin;
+        break;
+      case 'driver':
+        secretKey = process.env.secretDriver;
+        break;
+      default:
+        secretKey = process.env.secretUser;
+    }
+
+    const decoded = jwt.verify(token, secretKey);
     req.user = decoded;
+
+    // Check if the user's role matches the required role
+    if (decoded.role !== role) {
+      return res.status(403).send({ message: 'Forbidden' });
+    }
   } catch (err) {
     return res.status(401).send({ message: 'Invalid Token' });
   }
   next();
 };
 
-
-
-// jwtMiddlewareAdmin.js
-const verifyTokenAdmin = (req, res, next) => {
-  let token = req.headers['authorization'];
-  
-  if (!token) {
-    return res.status(403).send({ message: 'A token is required for authentication' });
-  }
-
-  if (token.startsWith('Bearer ')) {
-    token = token.slice(7, token.length);
-  }
-
-  try {
-    const decoded = jwt.verify(token, process.env.Admin_secret);
-    req.user = decoded;
-  } catch (err) {
-    return res.status(401).send({ message: 'Invalid Token' });
-  }
-  next();
+module.exports = {
+  verifyTokenAdmin: verifyToken('admin'),
+  verifyTokenUser: verifyToken('passenger'),
+  verifyTokenDriver: verifyToken('driver'),
 };
-
-
-module.exports = {verifyToken,verifyTokenAdmin};
