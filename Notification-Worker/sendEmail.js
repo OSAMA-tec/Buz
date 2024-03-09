@@ -7,7 +7,7 @@ const transporter = nodemailer.createTransport(new SendinBlueTransport({
 }));
 async function sendEmail({ to, subject,html }) {
   const mailOptions = {
-    from: '"Motive App" <no-reply@motiveapp.com>',
+    from: '"Bus App" <no-reply@busapp.com>',
     to,
     subject,
     html,

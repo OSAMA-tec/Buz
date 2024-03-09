@@ -3,8 +3,12 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
+    phoneNo: { type: String, required: true },
     role: { type: String, enum: ['passenger', 'driver', 'admin'], required: true },
     contactDetails: { type: String },
+    otp: { type: String },
+    otpVerified: { type: Boolean,default:true }
+
 });
 
 
