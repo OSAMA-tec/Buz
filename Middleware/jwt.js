@@ -1,6 +1,5 @@
 // jwtMiddleware.js
 const jwt = require('jsonwebtoken');
-const config = require('../Config/config');
 
 const verifyToken = (role) => (req, res, next) => {
   let token = req.headers['authorization'];

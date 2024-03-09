@@ -7,7 +7,8 @@ const userSchema = new mongoose.Schema({
     role: { type: String, enum: ['user', 'driver', 'admin'], required: true },
     contactDetails: { type: String },
     otp: { type: String },
-    otpVerified: { type: Boolean,default:true }
+    otpVerified: { type: Boolean,default:true },
+    profileUrl: { type: String }
 
 });
 

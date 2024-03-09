@@ -1,6 +1,7 @@
 // userRoutes.js
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
 
 
 
@@ -9,6 +10,8 @@ const { forgotPassword, updatePassword,verifyOTP } = require('../Controller/User
 
 
 
+
+const upload = multer({ storage: multer.memoryStorage() });
 const { verifyTokenAdmin, verifyTokenUser, verifyTokenDriver } = require('../Middleware/jwt')
 
 
@@ -16,9 +19,12 @@ const { verifyTokenAdmin, verifyTokenUser, verifyTokenDriver } = require('../Mid
 //Registration------User
 router.post('/signup', signup);                                      // ----Working
 router.post('/signin', signin);                                      // ----Working
+//Password------User
 router.post('/forgot/password', forgotPassword);                     // ----Working
 router.post('/verify/otp', verifyOTP);                               // ----Working
 router.post('/update/password', updatePassword);                     // ----Working
+//Profile------User
+router.post('/update/password',verifyTokenUser,  upload.single('profilePicture'),updatePassword);                     // ----
 
 
 module.exports = router;
