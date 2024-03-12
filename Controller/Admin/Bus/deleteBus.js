@@ -15,7 +15,6 @@ const deleteBus = async (req, res) => {
       return res.status(404).json({ error: 'Bus not found' });
     }
 
-    // Delete the associated locations
     await Location.deleteMany({ busId: bus._id });
 
     // Delete the bus

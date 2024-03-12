@@ -6,8 +6,13 @@ const multer = require('multer');
 
 
 const { createRoute,getAllRoutes } = require('../Controller/Admin/Route/addRoute');
+const { updateRoute } = require('../Controller/Admin/Route/update');
+const { deleteRoute } = require('../Controller/Admin/Route/deleteRoute');
+
+
 const { addBus } = require('../Controller/Admin/Bus/addBus');
 const { updateBus } = require('../Controller/Admin/Bus/update');
+const { deleteBus } = require('../Controller/Admin/Bus/deleteBus');
 
 
 
@@ -20,11 +25,14 @@ const { verifyTokenAdmin, verifyTokenUser, verifyTokenDriver } = require('../Mid
 //   Add Route
 router.post('/route',verifyTokenAdmin, createRoute);                                                                   // -----Working
 router.get('/route',verifyTokenAdmin, getAllRoutes);                                                                   // -----Working
+router.put('/route',verifyTokenAdmin, updateRoute);                                                                    // -----
+router.put('/route',verifyTokenAdmin, deleteRoute);                                                                    // -----
 
 
 //   Add Bus
-router.post('/bus',verifyTokenAdmin,upload.single('Logo'), addBus);                                                      // -----working
-router.put('/bus',verifyTokenAdmin,upload.single('Logo'), updateBus);                                                    // -----working
+router.post('/bus',verifyTokenAdmin,upload.single('Logo'), addBus);                                                    // -----working
+router.put('/bus',verifyTokenAdmin,upload.single('Logo'), updateBus);                                                  // -----
+router.delete('/bus',verifyTokenAdmin,upload.single('Logo'), deleteBus);                                               // -----
 
 
 
