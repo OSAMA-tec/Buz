@@ -6,6 +6,7 @@ const multer = require('multer');
 
 
 const { createRoute,getAllRoutes } = require('../Controller/Admin/Route/addRoute');
+const { addBus } = require('../Controller/Admin/Bus/addBus');
 
 
 
@@ -15,9 +16,13 @@ const { verifyTokenAdmin, verifyTokenUser, verifyTokenDriver } = require('../Mid
 
 
 
-//Add Route
-router.post('/route',verifyTokenAdmin, createRoute);                                                                   // -----
-router.get('/route',verifyTokenAdmin, getAllRoutes);                                                                  // -----
+//   Add Route
+router.post('/route',verifyTokenAdmin, createRoute);                                                                   // -----Working
+router.get('/route',verifyTokenAdmin, getAllRoutes);                                                                   // -----Working
+
+
+//   Add Bus
+router.post('/bus',verifyTokenAdmin, addBus);                                                                          // -----
 
 
 
