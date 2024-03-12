@@ -18,15 +18,15 @@ const { verifyTokenAdmin, verifyTokenUser, verifyTokenDriver } = require('../Mid
 
 
 //Registration------User
-router.post('/signup', signup);                                      // ----Working
-router.post('/signin', signin);                                      // ----Working
+router.post('/signup', signup);                                                                              // -----Working
+router.post('/signin', signin);                                                                              // -----Working
 //Password------User
-router.post('/forgot/password', forgotPassword);                     // ----Working
-router.post('/verify/otp', verifyOTP);                               // ----Working
-router.post('/update/password', updatePassword);                     // ----Working
+router.post('/forgot/password', forgotPassword);                                                             // -----Working
+router.post('/verify/otp', verifyOTP);                                                                       // -----Working
+router.post('/update/password', updatePassword);                                                             // -----Working
 //Profile------User
-router.get('/profile',verifyTokenUser, getUser);                    // -----Working
-router.post('/profile',verifyTokenUser, upload.single('profilePicture'), updateProfile);                     // ----Working
+router.get('/profile',verifyTokenUser, getUser);                                                             // -----Working
+router.post('/profile',verifyTokenUser, upload.single('profilePicture'), updateProfile);                     // -----Working
 
 
 module.exports = router;
