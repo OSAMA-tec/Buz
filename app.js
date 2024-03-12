@@ -6,12 +6,17 @@ const cors = require('cors'); // Enables CORS with various options
 const rateLimit = require('express-rate-limit'); // Basic rate-limiting middleware
 const compression = require('compression'); // Compression middleware for gzip or deflate
 const mongoSanitize = require('express-mongo-sanitize'); // Sanitize data to prevent MongoDB Operator Injection
-
+const http = require('http').createServer(app);
+const io = require('socket.io')(http);
 // Routes
 const userRoutes = require('./Routes/userRoute');
 const adminRoutes = require('./Routes/adminRoute');
 const passengerRoute = require('./Routes/passengerRoute');
 
+
+
+//socket server
+const driverSocketServer = require('./Socket/driverServer');
 
 // Connect to Database
 const connectDB = require('./Config/db');
@@ -37,6 +42,12 @@ app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/passenger', passengerRoute);
 
+
+
+// Socket.IO server
+driverSocketServer(io);
+
+
 // Error handling middleware (Example)
 app.use((err, req, res, next) => {
   console.error(err.stack);
@@ -50,4 +61,4 @@ app.use((req, res, next) => {
 
 // Set up the server
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+http.listen(PORT, () => console.log(`Server running on port ${PORT}`));
