@@ -7,6 +7,7 @@ const multer = require('multer');
 
 const { createRoute,getAllRoutes } = require('../Controller/Admin/Route/addRoute');
 const { addBus } = require('../Controller/Admin/Bus/addBus');
+const { updateBus } = require('../Controller/Admin/Bus/update');
 
 
 
@@ -22,7 +23,8 @@ router.get('/route',verifyTokenAdmin, getAllRoutes);                            
 
 
 //   Add Bus
-router.post('/bus',verifyTokenAdmin,upload.single('Logo'), addBus);                                                                          // -----
+router.post('/bus',verifyTokenAdmin,upload.single('Logo'), addBus);                                                      // -----working
+router.put('/bus',verifyTokenAdmin,upload.single('Logo'), updateBus);                                                    // -----working
 
 
 
