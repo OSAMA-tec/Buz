@@ -22,7 +22,7 @@ router.get('/route',verifyTokenAdmin, getAllRoutes);                            
 
 
 //   Add Bus
-router.post('/bus',verifyTokenAdmin, addBus);                                                                          // -----
+router.post('/bus',verifyTokenAdmin,upload.single('Logo'), addBus);                                                                          // -----
 
 
 

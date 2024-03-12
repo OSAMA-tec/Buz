@@ -10,6 +10,7 @@ const mongoSanitize = require('express-mongo-sanitize'); // Sanitize data to pre
 // Routes
 const userRoutes = require('./Routes/userRoute');
 const adminRoutes = require('./Routes/adminRoute');
+const passengerRoute = require('./Routes/passengerRoute');
 
 
 // Connect to Database
@@ -34,6 +35,7 @@ app.use(limiter);
 // API Routes
 app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
+app.use('/api/passenger', passengerRoute);
 
 // Error handling middleware (Example)
 app.use((err, req, res, next) => {
