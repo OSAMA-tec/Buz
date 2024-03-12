@@ -8,6 +8,7 @@ const multer = require('multer');
 const { signup, signin } = require('../Controller/User/Registration');
 const { forgotPassword, updatePassword,verifyOTP } = require('../Controller/User/forgetPassword');
 const  {updateProfile,getUser}= require('../Controller/User/profileUser');
+const  {deleteUser}= require('../Controller/User/delete');
 
 
 
@@ -27,6 +28,8 @@ router.post('/update/password', updatePassword);                                
 //Profile------User
 router.get('/profile',verifyTokenUser, getUser);                                                             // -----Working
 router.post('/profile',verifyTokenUser, upload.single('profilePicture'), updateProfile);                     // -----Working
+//delete account
+router.delete('/profile',verifyTokenUser, deleteUser);                                                       // -----Working
 
 
 module.exports = router;
