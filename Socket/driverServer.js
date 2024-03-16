@@ -47,6 +47,35 @@ const driverSocketServer = (io) => {
         socket.emit('error', 'Failed to update location');
       }
     });
+    socket.on('updateBusStatus', async ({ delay, delayReason, arrivedLastStop, arrivedNextStop, seatsAvailable }) => {
+      try {
+        const bus = await Bus.findOne({ driverId: socket.id });
+        if (!bus) {
+          socket.emit('error', 'Bus not found');
+          return;
+        }
+
+        if (delay) bus.delay = delay;
+        if (delayReason) bus.delayReason = delayReason;
+        if (arrivedLastStop) bus.arrivedLastStop = arrivedLastStop;
+        if (arrivedNextStop) bus.arrivedNextStop = arrivedNextStop;
+        if (seatsAvailable) bus.seatsAvailable = seatsAvailable;
+
+        await bus.save();
+
+        driverNamespace.emit('busStatusUpdate', {
+          busId: bus._id,
+          delay: bus.delay,
+          delayReason: bus.delayReason,
+          arrivedLastStop: bus.arrivedLastStop,
+          arrivedNextStop: bus.arrivedNextStop,
+          seatsAvailable: bus.seatsAvailable,
+        });
+      } catch (error) {
+        console.error('Error updating bus status:', error);
+        socket.emit('error', 'Failed to update bus status');
+      }
+    });
 
     socket.on('disconnect', async () => {
       console.log('A driver disconnected');

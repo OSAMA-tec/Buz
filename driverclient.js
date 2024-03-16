@@ -22,6 +22,15 @@ socket.on('locationUpdate', ({ busId, latitude, longitude }) => {
   console.log(`Bus ${busId} location updated: ${latitude}, ${longitude}`);
 });
 
+socket.on('busStatusUpdate', ({ busId, delay, delayReason, arrivedLastStop, arrivedNextStop, seatsAvailable }) => {
+  console.log(`Bus ${busId} status updated:`);
+  console.log(`  Delay: ${delay}`);
+  console.log(`  Delay Reason: ${delayReason}`);
+  console.log(`  Arrived Last Stop: ${arrivedLastStop}`);
+  console.log(`  Arrived Next Stop: ${arrivedNextStop}`);
+  console.log(`  Seats Available: ${seatsAvailable}`);
+});
+
 // Test the 'driverStart' event
 const startBus = (busNumber) => {
   socket.emit('driverStart', { busNumber });
@@ -32,8 +41,16 @@ const updateLocation = (latitude, longitude) => {
   socket.emit('locationUpdate', { latitude, longitude });
 };
 
+// Test the 'updateBusStatus' event
+const updateBusStatus = (delay, delayReason, arrivedLastStop, arrivedNextStop, seatsAvailable) => {
+  socket.emit('updateBusStatus', { delay, delayReason, arrivedLastStop, arrivedNextStop, seatsAvailable });
+};
+
 // Test the 'driverStart' event
 startBus('ABC-123');
 
 // Test the 'locationUpdate' event
 updateLocation(37.7749, -122.4194);
+
+// Test the 'updateBusStatus' event
+updateBusStatus('30 minutes', 'Traffic congestion', 'Main Street', 'Park Avenue', 25);
