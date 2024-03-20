@@ -7,21 +7,8 @@ const driverSocketServer = (io) => {
   driverNamespace.on('connection', (socket) => {
     console.log('A driver connected');
 
-    socket.on('driverStart', async ({ busNumber }) => {
+    socket.on('driverStart', async () => {
       try {
-        if (!busNumber) {
-          throw new Error('Bus number is required');
-        }
-
-        const bus = await Bus.findOne({ number: busNumber });
-        if (!bus) {
-          throw new Error('Bus not found');
-        }
-
-        bus.driverId = socket.id;
-        bus.available = true;
-        await bus.save();
-
         socket.emit('driverStartSuccess', 'Bus started successfully');
       } catch (error) {
         console.error('Error starting bus:', error);
@@ -34,19 +21,19 @@ const driverSocketServer = (io) => {
         if (!latitude || !longitude) {
           throw new Error('Latitude and longitude are required');
         }
-
+    
         const bus = await Bus.findOne({ driverId: socket.id });
         if (!bus) {
           throw new Error('Bus not found');
         }
-
-        const newLocation = new Location({
-          busId: bus._id,
-          latitude,
-          longitude,
-        });
-        await newLocation.save();
-
+    
+        const existingLocation = await Location.findOne({ busId: bus._id });
+        if (existingLocation) {
+          existingLocation.latitude = latitude;
+          existingLocation.longitude = longitude;
+          existingLocation.timestamp = Date.now();
+          await existingLocation.save();
+        }         
         driverNamespace.emit('locationUpdate', { busId: bus._id, latitude, longitude });
       } catch (error) {
         console.error('Error updating location:', error);

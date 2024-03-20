@@ -8,7 +8,7 @@ const addBus = async (req, res) => {
       return res.status(403).json({ error: 'You are not authorized to add buses' });
     }
 
-    const { name, number, type, capacity, amenities, routeId } = req.body;
+    const { name, number, type, capacity, amenities, routeId, latitude, longitude } = req.body;
 
     const existingBus = await Bus.findOne({ number });
     if (existingBus) {
@@ -44,6 +44,8 @@ const addBus = async (req, res) => {
 
     const newLocation = new Location({
       busId: savedBus._id,
+      latitude,
+      longitude,
     });
 
     await newLocation.save();
