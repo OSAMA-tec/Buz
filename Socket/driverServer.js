@@ -9,10 +9,13 @@ const driverSocketServer = (io) => {
 
     socket.on('driverStart', async ({ busNumber }) => {
       try {
+        if (!busNumber) {
+          throw new Error('Bus number is required');
+        }
+
         const bus = await Bus.findOne({ number: busNumber });
         if (!bus) {
-          socket.emit('error', 'Bus not found');
-          return;
+          throw new Error('Bus not found');
         }
 
         bus.driverId = socket.id;
@@ -22,16 +25,19 @@ const driverSocketServer = (io) => {
         socket.emit('driverStartSuccess', 'Bus started successfully');
       } catch (error) {
         console.error('Error starting bus:', error);
-        socket.emit('error', 'Failed to start bus');
+        socket.emit('error', error.message);
       }
     });
 
     socket.on('locationUpdate', async ({ latitude, longitude }) => {
       try {
+        if (!latitude || !longitude) {
+          throw new Error('Latitude and longitude are required');
+        }
+
         const bus = await Bus.findOne({ driverId: socket.id });
         if (!bus) {
-          socket.emit('error', 'Bus not found');
-          return;
+          throw new Error('Bus not found');
         }
 
         const newLocation = new Location({
@@ -44,22 +50,51 @@ const driverSocketServer = (io) => {
         driverNamespace.emit('locationUpdate', { busId: bus._id, latitude, longitude });
       } catch (error) {
         console.error('Error updating location:', error);
-        socket.emit('error', 'Failed to update location');
+        socket.emit('error', error.message);
       }
     });
+
     socket.on('updateBusStatus', async ({ delay, delayReason, arrivedLastStop, arrivedNextStop, seatsAvailable }) => {
       try {
         const bus = await Bus.findOne({ driverId: socket.id });
         if (!bus) {
-          socket.emit('error', 'Bus not found');
-          return;
+          throw new Error('Bus not found');
         }
 
-        if (delay) bus.delay = delay;
-        if (delayReason) bus.delayReason = delayReason;
-        if (arrivedLastStop) bus.arrivedLastStop = arrivedLastStop;
-        if (arrivedNextStop) bus.arrivedNextStop = arrivedNextStop;
-        if (seatsAvailable) bus.seatsAvailable = seatsAvailable;
+        if (delay !== undefined) {
+          if (typeof delay !== 'string') {
+            throw new Error('Delay must be a string');
+          }
+          bus.delay = delay;
+        }
+
+        if (delayReason !== undefined) {
+          if (typeof delayReason !== 'string') {
+            throw new Error('Delay reason must be a string');
+          }
+          bus.delayReason = delayReason;
+        }
+
+        if (arrivedLastStop !== undefined) {
+          if (typeof arrivedLastStop !== 'string') {
+            throw new Error('Arrived last stop must be a string');
+          }
+          bus.arrivedLastStop = arrivedLastStop;
+        }
+
+        if (arrivedNextStop !== undefined) {
+          if (typeof arrivedNextStop !== 'string') {
+            throw new Error('Arrived next stop must be a string');
+          }
+          bus.arrivedNextStop = arrivedNextStop;
+        }
+
+        if (seatsAvailable !== undefined) {
+          if (typeof seatsAvailable !== 'number') {
+            throw new Error('Seats available must be a number');
+          }
+          bus.seatsAvailable = seatsAvailable;
+        }
 
         await bus.save();
 
@@ -73,7 +108,7 @@ const driverSocketServer = (io) => {
         });
       } catch (error) {
         console.error('Error updating bus status:', error);
-        socket.emit('error', 'Failed to update bus status');
+        socket.emit('error', error.message);
       }
     });
 
