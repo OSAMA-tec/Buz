@@ -16,7 +16,7 @@ const busSchema = new mongoose.Schema({
   delayReason:{type:String},
   arrivedLastStop:{type:String},
   arrivedNextStop:{type:String},
-  seatsAvailable:{type:Number},
+  seatsAvailable:{type:Number,default:0},
   avilable:{type:Boolean},
   routeId:{type:String}
 });

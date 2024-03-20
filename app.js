@@ -17,6 +17,7 @@ const passengerRoute = require('./Routes/passengerRoute');
 
 //socket server
 const driverSocketServer = require('./Socket/driverServer');
+const setupBusLocationSocket = require('./Socket/busLocationSocket');
 
 // Connect to Database
 const connectDB = require('./Config/db');
@@ -46,6 +47,7 @@ app.use('/api/passenger', passengerRoute);
 
 // Socket.IO server
 driverSocketServer(io);
+setupBusLocationSocket(io);
 
 
 // Error handling middleware (Example)

@@ -6,7 +6,7 @@ const multer = require('multer');
 
 
 const { getAllBuses } = require('../Controller/Passenger/getBuses');
-const { planTrip } = require('../Controller/Passenger/getTripBus');
+const { getBusesByRoute } = require('../Controller/Passenger/getBusesTrip');
 
 
 
@@ -17,8 +17,8 @@ const { verifyTokenAdmin, verifyTokenUser, verifyTokenDriver } = require('../Mid
 
 
 //   Get Route
-router.get('/bus', getAllBuses);                                                                          // -----
-router.get('/trip/buses', planTrip);                                                                      // -----
+router.get('/bus', getAllBuses);                                                                                          // -----
+router.get('/trip/buses',verifyTokenUser, getBusesByRoute);                                                               // -----
 
 
 
