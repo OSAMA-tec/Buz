@@ -7,6 +7,7 @@ const routeSchema = new mongoose.Schema({
     distance: { type: Number },
     estimatedTravelTime: { type: Number },
     waypoints: [{ type: String }],
+    ownerId: { type: String },
   });
   const Route = mongoose.model('Route', routeSchema);
 module.exports={Route}

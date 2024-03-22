@@ -2,7 +2,7 @@ const { Route } = require('../../../Model/route');
 
 const deleteRoute = async (req, res) => {
   try {
-    if (req.user.role !== 'admin') {
+    if (req.user.role !== 'owner') {
       return res.status(403).json({ error: 'You are not authorized to delete routes' });
     }
 

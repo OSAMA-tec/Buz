@@ -2,8 +2,7 @@ const { Route } = require('../../../Model/route');
 
 const updateRoute = async (req, res) => {
   try {
-    // Check if the user is an admin
-    if (req.user.role !== 'admin') {
+    if (req.user.role !== 'owner') {
       return res.status(403).json({ error: 'You are not authorized to update routes' });
     }
 

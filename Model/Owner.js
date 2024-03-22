@@ -43,6 +43,9 @@ const ownerBusSchema = new mongoose.Schema({
   updatedAt: {
     type: Date,
     default: Date.now
+  },
+  ownerId: {
+    type: String,
   }
 });
 
