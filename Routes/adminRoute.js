@@ -16,6 +16,10 @@ const { deleteBus } = require('../Controller/Admin/Bus/deleteBus');
 
 
 
+const { addOwner } = require('../Controller/Admin/Owner/addOwner');
+
+
+
 
 const upload = multer({ storage: multer.memoryStorage() });
 const { verifyTokenAdmin, verifyTokenUser, verifyTokenDriver } = require('../Middleware/jwt')
@@ -33,6 +37,9 @@ router.put('/route',verifyTokenAdmin, deleteRoute);                             
 router.post('/bus',verifyTokenAdmin,upload.single('Logo'), addBus);                                                    // -----working
 router.put('/bus',verifyTokenAdmin,upload.single('Logo'), updateBus);                                                  // -----
 router.delete('/bus',verifyTokenAdmin,upload.single('Logo'), deleteBus);                                               // -----
+
+//Owner
+router.post('/add/owner',verifyTokenAdmin, addOwner);                                                               // -----
 
 
 

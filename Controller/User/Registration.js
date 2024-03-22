@@ -53,6 +53,8 @@ const signin = async (req, res) => {
       token = jwt.sign(payload, process.env.secretAdmin, options);
     } else if (user.role === 'driver') {
       token = jwt.sign(payload, process.env.secretDriver, options);
+    } else if (user.role === 'owner') {
+      token = jwt.sign(payload, process.env.secretOwner, options);
     } else {
       token = jwt.sign(payload, process.env.secretUser, options);
     }

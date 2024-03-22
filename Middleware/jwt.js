@@ -20,8 +20,11 @@ const verifyToken = (role) => (req, res, next) => {
       case 'driver':
         secretKey = process.env.secretDriver;
         break;
+      case 'owner':
+        secretKey = process.env.secretDriver;
+        break;
       default:
-        secretKey = process.env.secretUser;
+        secretKey = process.env.secretOwner;
     }
 
     const decoded = jwt.verify(token, secretKey);
@@ -41,4 +44,5 @@ module.exports = {
   verifyTokenAdmin: verifyToken('admin'),
   verifyTokenUser: verifyToken('user'),
   verifyTokenDriver: verifyToken('driver'),
+  BusOwner: verifyToken('owner'),
 };
