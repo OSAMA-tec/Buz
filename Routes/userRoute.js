@@ -9,6 +9,7 @@ const { signup, signin } = require('../Controller/User/Registration');
 const { forgotPassword, updatePassword,verifyOTP } = require('../Controller/User/forgetPassword');
 const  {updateProfile,getUser}= require('../Controller/User/profileUser');
 const  {deleteUser}= require('../Controller/User/delete');
+const  {getAllNotifications,updateNotificationToken,createNotification}= require('../Controller/User/notification');
 
 
 
@@ -30,6 +31,14 @@ router.get('/profile',verifyTokenUser, getUser);                                
 router.post('/profile',verifyTokenUser, upload.single('profilePicture'), updateProfile);                     // -----Working
 //delete account
 router.delete('/profile',verifyTokenUser, deleteUser);                                                       // -----Working
+
+
+
+
+//Notification
+router.post('/notification',verifyTokenUser, createNotification);                                                          // -----
+router.get('/notification',verifyTokenUser, getAllNotifications);                                                          // -----
+router.post('/notification/update',verifyTokenUser, updateNotificationToken);                                              // -----
 
 
 module.exports = router;

@@ -14,7 +14,7 @@ const adminRoutes = require('./Routes/adminRoute');
 const passengerRoute = require('./Routes/passengerRoute');
 const ownerRoute = require('./Routes/ownerRoute');
 const driverRoute = require('./Routes/driverRoute');
-
+require('dotenv').config(); 
 
 
 
