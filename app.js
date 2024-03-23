@@ -13,6 +13,7 @@ const userRoutes = require('./Routes/userRoute');
 const adminRoutes = require('./Routes/adminRoute');
 const passengerRoute = require('./Routes/passengerRoute');
 const ownerRoute = require('./Routes/ownerRoute');
+const driverRoute = require('./Routes/driverRoute');
 
 
 
@@ -45,6 +46,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/passenger', passengerRoute);
 app.use('/api/owner', ownerRoute);
+app.use('/api/driver', driverRoute);
 
 
 

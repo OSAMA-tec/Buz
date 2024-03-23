@@ -18,7 +18,7 @@ const { verifyTokenAdmin, verifyTokenUser, verifyTokenDriver } = require('../Mid
 
 //   Get Route
 router.get('/bus', getAllBuses);                                                                                          // -----
-router.get('/trip/buses',verifyTokenUser, getBusesByRoute);                                                               // -----
+router.get('/trip/buses',verifyTokenUser, getBusesByRoute);                                                               // -----working
 
 
 

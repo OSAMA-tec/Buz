@@ -6,6 +6,8 @@ const multer = require('multer');
 
 
 const { verifyDriver } = require('../Controller/Driver/verifyDriver');
+const { submitReport,updateReport } = require('../Controller/Driver/reportDriver');
+const { busStatusUpdate } = require('../Controller/Driver/busStatus');
 
 
 
@@ -17,7 +19,10 @@ const { verifyTokenAdmin, verifyTokenUser, verifyTokenDriver } = require('../Mid
 
 
 //   Add Route
-router.post('/verify/driver', verifyDriver);                                                                   // -----
+router.post('/verify', verifyDriver);                                                                          // -----
+router.post('/report/submit', submitReport);                                                                   // -----
+router.post('/report/update', updateReport);                                                                   // -----
+router.post('/bus/status', busStatusUpdate);                                                                   // -----
 
 
 
