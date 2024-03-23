@@ -13,6 +13,8 @@ const busSchema = new mongoose.Schema({
     AC: { type: Boolean, default: false },
   },
   delay: { type: String },
+  busType:{type: String, enum: ['coach','motor coach', 'shuttle bus', 'minibus', 'double-decker bus','single-decker bus', 'sleeper bus', 'party bus', 'school bus', 'trolleybus', 'articulated bus', 'bendy bus', 'minibus', 'minicoach', 'minivan','executive']},
+
   delayReason:{type:String},
   arrivedLastStop:{type:String},
   arrivedNextStop:{type:String},

@@ -12,11 +12,9 @@ const getBusesByRoute = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    // Convert origin and destination to lowercase for case-insensitive matching
     const originLowerCase = origin.toLowerCase();
     const destinationLowerCase = destination.toLowerCase();
 
-    // Find the routes that match the origin and destination
     const routes = await Route.find({
       $or: [
         { origin: { $regex: new RegExp(originLowerCase, 'i') }, destination: { $regex: new RegExp(destinationLowerCase, 'i') } },

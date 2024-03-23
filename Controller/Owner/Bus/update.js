@@ -7,7 +7,7 @@ const updateBus = async (req, res) => {
       return res.status(403).json({ error: 'You are not authorized to update buses' });
     }
 
-    const { busId, name, number, type, capacity, amenities, routeId } = req.body;
+    const { busId, name, number, type, capacity, amenities, routeId,busType } = req.body;
 
     const bus = await Bus.findById(busId);
     if (!bus) {
@@ -20,6 +20,7 @@ const updateBus = async (req, res) => {
     if (capacity) bus.capacity = capacity;
     if (amenities) bus.amenities = amenities;
     if (routeId) bus.routeId = routeId;
+    if (busType) bus.busType = busType;
 
     if (req.file) {
       const busLogo = req.file;
