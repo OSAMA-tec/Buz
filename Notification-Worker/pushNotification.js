@@ -2,7 +2,6 @@ const admin = require('../Firebase/config');
 const axios = require('axios');
 require('dotenv').config(); 
 
-const LEGACY_SERVER_KEY = process.env.FIREBASE_SERVER_KEY;
 
 async function sendPushNotification(token, title, body) {
   try {
@@ -16,7 +15,7 @@ async function sendPushNotification(token, title, body) {
 
     const response = await axios.post('https://fcm.googleapis.com/fcm/send', message, {
       headers: {
-        'Authorization': `key=${LEGACY_SERVER_KEY}`,
+        'Authorization': `key=${process.env.FIREBASE_SERVER_KEY}`,
         'Content-Type': 'application/json',
       },
     });
