@@ -1,5 +1,5 @@
 const { Route } = require('../../../Model/route');
-const { OwnerBus } = require('../../../Model/OwnerBus');
+const { OwnerBus } = require('../../../Model/Owner');
 
 const deleteRoute = async (req, res) => {
   try {

@@ -18,7 +18,8 @@ const busSchema = new mongoose.Schema({
   arrivedNextStop:{type:String},
   seatsAvailable:{type:Number,default:0},
   avilable:{type:Boolean},
-  routeId:{type:String}
+  routeId:{type:String},
+  ownerId:{type:String}
 });
 const Bus = mongoose.model('Bus', busSchema);
 module.exports={Bus}

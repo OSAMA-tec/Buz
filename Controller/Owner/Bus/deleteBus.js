@@ -1,6 +1,6 @@
 const { Bus } = require('../../../Model/Bus');
 const { Location } = require('../../../Model/location');
-const { OwnerBus } = require('../../../Model/OwnerBus');
+const { OwnerBus } = require('../../../Model/Owner');
 
 const deleteBus = async (req, res) => {
   try {
