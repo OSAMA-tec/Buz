@@ -2,7 +2,6 @@ const { User } = require('../../../Model/User');
 const {OwnerBus} = require('../../../Model/Owner');
 const bcrypt = require('bcrypt');
 const sendEmail = require('../../../Notification-Worker/sendEmail');
-
 const addOwner = async (req, res) => {
     try {
         const {

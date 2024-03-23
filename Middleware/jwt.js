@@ -21,10 +21,10 @@ const verifyToken = (role) => (req, res, next) => {
         secretKey = process.env.secretDriver;
         break;
       case 'owner':
-        secretKey = process.env.secretDriver;
+        secretKey = process.env.secretOwner;
         break;
       default:
-        secretKey = process.env.secretOwner;
+        secretKey = process.env.secretUser;
     }
 
     const decoded = jwt.verify(token, secretKey);

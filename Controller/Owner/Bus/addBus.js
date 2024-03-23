@@ -73,13 +73,21 @@ const getAllBusesByOwner = async (req, res) => {
       return res.status(403).json({ error: 'You are not authorized to access this resource' });
     }
 
-    const ownerId = req.user._id;
+    const userId = req.user._id;
 
-    const buses = await Bus.find({ ownerId: { $exists: true, $eq: ownerId } });
+    const owner = await OwnerBus.findOne({ userId });
+
+    if (!owner) {
+      return res.status(404).json({ error: 'Owner not found' });
+    }
+
+    const ownerId = owner._id;
+
+    const buses = await Bus.find({ ownerId });
 
     res.status(200).json(buses);
   } catch (error) {
-    console.error('Error getting buses by owner:', error);
+    console.error('Error getting routes:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };

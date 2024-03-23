@@ -1,4 +1,5 @@
 const { Route } = require('../../../Model/route');
+const { OwnerBus } = require('../../../Model/OwnerBus');
 
 const deleteRoute = async (req, res) => {
   try {
@@ -11,6 +12,18 @@ const deleteRoute = async (req, res) => {
     const route = await Route.findById(routeId);
     if (!route) {
       return res.status(404).json({ error: 'Route not found' });
+    }
+
+    const ownerId = req.user._id;
+
+    const owner = await OwnerBus.findOne({ userId: ownerId });
+
+    if (!owner) {
+      return res.status(404).json({ error: 'Owner not found' });
+    }
+
+    if (route.ownerId.toString() !== owner._id.toString()) {
+      return res.status(403).json({ error: 'You are not authorized to delete this route' });
     }
 
     await Route.findByIdAndDelete(routeId);

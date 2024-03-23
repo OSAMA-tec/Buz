@@ -1,23 +1,34 @@
 const { Bus } = require('../../../Model/Bus');
 const { Location } = require('../../../Model/location');
+const { OwnerBus } = require('../../../Model/OwnerBus');
 
 const deleteBus = async (req, res) => {
   try {
-    if (req.user.role !== 'admin') {
+    if (req.user.role !== 'owner') {
       return res.status(403).json({ error: 'You are not authorized to delete buses' });
     }
 
     const { busId } = req.body;
 
-    // Find the bus by ID
     const bus = await Bus.findById(busId);
     if (!bus) {
       return res.status(404).json({ error: 'Bus not found' });
     }
 
+    const ownerId = req.user._id;
+
+    const owner = await OwnerBus.findOne({ userId: ownerId });
+
+    if (!owner) {
+      return res.status(404).json({ error: 'Owner not found' });
+    }
+
+    if (bus.ownerId.toString() !== owner._id.toString()) {
+      return res.status(403).json({ error: 'You are not authorized to delete this bus' });
+    }
+
     await Location.deleteMany({ busId: bus._id });
 
-    // Delete the bus
     await Bus.findByIdAndDelete(busId);
 
     res.status(200).json({ message: 'Bus and associated locations deleted successfully' });
