@@ -37,8 +37,8 @@ const verifyDriver= async (req, res) => {
       }
     }
 
-    bus.driverId = req.user.id;
-    bus.available = true;
+    bus.driverId = req.body.Devicetoken;
+    bus.avilable=true
     await bus.save();
 
     res.status(200).json({ message: 'Driver authenticated successfully', bus });

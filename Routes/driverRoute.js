@@ -19,10 +19,10 @@ const { verifyTokenAdmin, verifyTokenUser, verifyTokenDriver } = require('../Mid
 
 
 //   Add Route
-router.post('/verify', verifyDriver);                                                                          // -----
-router.post('/report/submit', submitReport);                                                                   // -----
-router.post('/report/update', updateReport);                                                                   // -----
-router.post('/bus/status', busStatusUpdate);                                                                   // -----
+router.post('/verify', verifyDriver);                                                                          // -----working
+router.post('/report/submit', submitReport);                                                                   // -----working
+router.post('/report/update', updateReport);                                                                   // -----working
+router.post('/bus/status', busStatusUpdate);                                                                   // -----working
 
 
 

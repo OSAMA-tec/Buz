@@ -25,7 +25,7 @@ const submitReport = async (req, res) => {
 
 const updateReport = async (req, res) => {
   try {
-    const { reportId } = req.params;
+    const { reportId } = req.body;
     const { busId, routeId, issueType, description, status } = req.body;
 
     const report = await Report.findById(reportId);

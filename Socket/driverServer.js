@@ -16,42 +16,73 @@ const driverSocketServer = (io) => {
       }
     });
 
-    socket.on('locationUpdate', async ({ latitude, longitude }) => {
+    socket.on('locationUpdate', async ({ latitude, longitude, deviceToken }) => {
       try {
-        if (!latitude || !longitude) {
-          throw new Error('Latitude and longitude are required');
+        if (!latitude || !longitude || !deviceToken) {
+          throw new Error('deviceToken,Latitude and longitude are required');
         }
-    
-        const bus = await Bus.findOne({ driverId: socket.id });
+
+        const bus = await Bus.findOne({ driverId: deviceToken });
+        console.log(bus)
         if (!bus) {
           throw new Error('Bus not found');
         }
-    
+
         const existingLocation = await Location.findOne({ busId: bus._id });
         if (existingLocation) {
           existingLocation.latitude = latitude;
           existingLocation.longitude = longitude;
           existingLocation.timestamp = Date.now();
           await existingLocation.save();
-        }         
+        }
         driverNamespace.emit('locationUpdate', { busId: bus._id, latitude, longitude });
       } catch (error) {
         console.error('Error updating location:', error);
         socket.emit('error', error.message);
       }
     });
-    socket.on('disconnect', async () => {
-      console.log('A driver disconnected');
+    // socket.on('disconnect', async ({ deviceToken }) => {
+    //   console.log('A driver disconnected');
+    //   try {
+    //     const bus = await Bus.findOne({ driverId: deviceToken });
+    //     console.log('bus before:', bus);
+    //     if (!bus) {
+    //       throw new Error('Bus not found');
+    //     }
+
+    //     if (bus) {
+    //       bus.driverId = null;
+    //       bus.avilable = false;
+    //       await bus.save();
+    //     }
+    //     console.log('bus after:', bus);
+    //   } catch (error) {
+    //     console.error('Error handling disconnection:', error);
+    //   }
+    // });
+
+    socket.on('driverDisconnect', async ({ deviceToken }) => {
+      console.log('A driver is disconnecting');
       try {
-        const bus = await Bus.findOne({ driverId: socket.id });
+        const bus = await Bus.findOne({ driverId: deviceToken });
+        console.log('bus before:', bus);
+        if (!bus) {
+          throw new Error('Bus not found');
+        }
+
         if (bus) {
           bus.driverId = null;
-          bus.available = false;
+          bus.avilable = false;
           await bus.save();
         }
+        console.log('bus after:', bus);
       } catch (error) {
         console.error('Error handling disconnection:', error);
       }
+    });
+
+    socket.on('disconnect', () => {
+      console.log('A driver disconnected');
     });
   });
 };

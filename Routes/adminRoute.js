@@ -23,8 +23,8 @@ const { verifyTokenAdmin, verifyTokenUser, verifyTokenDriver } = require('../Mid
 
 //Owner
 router.post('/add/owner',verifyTokenAdmin, addOwner);                                                                    // -----
-router.get('/reports',verifyTokenAdmin, getAllReports);                                                                  // -----
-router.get('/feedbacks',verifyTokenAdmin, getAllFeedback);                                                               // -----
+router.get('/reports',verifyTokenAdmin, getAllReports);                                                                  // -----working
+router.get('/feedbacks',verifyTokenAdmin, getAllFeedback);                                                               // -----working
 
 
 

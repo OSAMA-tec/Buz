@@ -21,11 +21,10 @@ const { verifyTokenAdmin, verifyTokenUser, verifyTokenDriver } = require('../Mid
 //   Get Route
 router.get('/buses', getAllBuses);                                                                                        // -----
 router.get('/trip/buses',verifyTokenUser, getBusesByRoute);                                                               // -----working
-router.get('/trip/buses',verifyTokenUser, getBusesByRoute);                                                               // -----working
-router.get('/report/bus',verifyTokenUser, submitReport);                                                                  // -----working
-router.post('/report/update',verifyTokenUser, updateReport);                                                              // -----
-router.post('/feedback/submit',verifyTokenUser, createFeedback);                                                          // -----
-router.get('/feedback',verifyTokenUser, getFeedbackByBus);                                                                // -----
+router.post('/report/bus',verifyTokenUser, submitReport);                                                                 // -----working
+router.post('/report/update',verifyTokenUser, updateReport);                                                              // -----working
+router.post('/feedback/submit',verifyTokenUser, createFeedback);                                                          // -----working
+router.get('/feedback',verifyTokenUser, getFeedbackByBus);                                                                // -----working
 
 
 
