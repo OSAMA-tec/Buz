@@ -85,6 +85,7 @@ const verifyOTP = async (req, res) => {
     }
 
     user.otpVerified = true;
+    user.otp = null;
     await user.save();
 
     res.status(200).json({ message: 'OTP verified successfully' });

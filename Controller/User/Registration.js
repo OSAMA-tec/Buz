@@ -1,7 +1,7 @@
-// userController.js
 const { User } = require('../../Model/User');
 const { generatePasswordHash, isPasswordValid } = require('../../Utils/password');
 const jwt = require('jsonwebtoken');
+const sendEmail = require('../../Notification-Worker/sendEmail');
 
 const signup = async (req, res) => {
   try {
@@ -13,6 +13,7 @@ const signup = async (req, res) => {
     }
 
     const hashedPassword = generatePasswordHash(password);
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
     const newUser = new User({
       name,
@@ -20,16 +21,65 @@ const signup = async (req, res) => {
       password: hashedPassword,
       phoneNo,
       role,
+      otp,
+      otpVerified: false,
     });
 
     await newUser.save();
 
-    res.status(201).json({ message: 'User created successfully' });
+    const emailSubject = 'OTP Verification';
+    const emailHtml = `
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              background-color: #f4f4f4;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 20px;
+              background-color: #ffffff;
+              border-radius: 5px;
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            h1 {
+              color: #333333;
+            }
+            p {
+              color: #666666;
+            }
+            .otp {
+              font-size: 24px;
+              font-weight: bold;
+              color: #007bff;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <h1>OTP Verification</h1>
+            <p>Dear ${newUser.name},</p>
+            <p>Please use the following OTP to verify your account:</p>
+            <p class="otp">${otp}</p>
+            <p>Best regards,<br>The Bus App Team</p>
+          </div>
+        </body>
+      </html>
+    `;
+    await sendEmail({ to: email, subject: emailSubject, html: emailHtml });
+
+    res.status(201).json({ message: 'User created successfully. Please verify your account using the OTP sent to your email.' });
   } catch (error) {
     console.error('Error during signup:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
+
+
 
 const signin = async (req, res) => {
   try {
@@ -38,6 +88,11 @@ const signin = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(401).json({ error: 'Invalid credentials' });
+    }
+
+    if (!user.otpVerified) {
+      await User.deleteOne({ _id: user._id });
+      return res.status(401).json({ error: 'OTP not verified. Account deleted.' });
     }
 
     const isValid = isPasswordValid(password, user.password);
@@ -65,5 +120,4 @@ const signin = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
-
 module.exports = { signup, signin };
