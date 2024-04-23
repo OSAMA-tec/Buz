@@ -1,12 +1,13 @@
 // notification-worker/sendEmail.js
 const nodemailer = require('nodemailer');
-const SendinBlueTransport = require('nodemailer-sendinblue-transport');
-require('dotenv').config(); 
+const BrevoDatTransport = require('nodemailer-brevo-transport');
+require('dotenv').config();
 
-const transporter = nodemailer.createTransport(new SendinBlueTransport({
+const transporter = nodemailer.createTransport(new BrevoDatTransport({
   apiKey: process.env.SENDINBLUE_API_KEY,
 }));
-async function sendEmail({ to, subject,html }) {
+
+async function sendEmail({ to, subject, html }) {
   const mailOptions = {
     from: '"Bus App" <no-reply@busapp.com>',
     to,
