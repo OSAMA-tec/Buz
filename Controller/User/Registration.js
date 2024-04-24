@@ -9,12 +9,15 @@ const signup = async (req, res) => {
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
-      return res.status(400).json({ error: 'User already exists' });
+      if (!existingUser.otpVerified && existingUser.otpPurpose === 'signup') {
+        await User.deleteOne({ _id: existingUser._id });
+      } else {
+        return res.status(400).json({ error: 'User already exists' });
+      }
     }
 
     const hashedPassword = generatePasswordHash(password);
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
+    const otp = Math.floor(1000 + Math.random() * 9000).toString();
     const newUser = new User({
       name,
       email,
@@ -23,6 +26,7 @@ const signup = async (req, res) => {
       role,
       otp,
       otpVerified: false,
+      otpPurpose: 'signup',
     });
 
     await newUser.save();
@@ -90,11 +94,17 @@ const signin = async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    if (!user.otpVerified) {
+    if (!user.otpVerified && user.otpPurpose === 'signup') {
       await User.deleteOne({ _id: user._id });
       return res.status(401).json({ error: 'OTP not verified. Account deleted.' });
     }
 
+    if (user.otpPurpose === 'forgotPassword') {
+      user.otpVerified = true;
+      user.otp = null;
+      user.otpPurpose = 'signup';
+      await user.save();
+    }
     const isValid = isPasswordValid(password, user.password);
     if (!isValid) {
       return res.status(401).json({ error: 'Invalid credentials' });

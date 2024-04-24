@@ -8,7 +8,8 @@ const userSchema = new mongoose.Schema({
     contactDetails: { type: String },
     otp: { type: String },
     otpVerified: { type: Boolean,default:true },
-    profileUrl: { type: String }
+    profileUrl: { type: String },
+    otpPurpose: { type: String, enum: ['signup', 'forgotPassword'], default: 'signup' },
 
 });
 

@@ -12,10 +12,10 @@ const forgotPassword = async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
+    const otp = Math.floor(1000 + Math.random() * 9000).toString();
     user.otp = otp;
     user.otpVerified = false;
+    user.otpPurpose = 'forgotPassword';
     await user.save();
 
     const emailSubject = 'Password Reset OTP';
@@ -75,9 +75,17 @@ const verifyOTP = async (req, res) => {
   try {
     const { email, otp } = req.body;
 
+    if (!email || !otp) {
+      return res.status(400).json({ error: 'Email and OTP are required' });
+    }
+
     const user = await User.findOne({ email });
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (!user.otp) {
+      return res.status(400).json({ error: 'No OTP found for the user' });
     }
 
     if (user.otp !== otp) {
