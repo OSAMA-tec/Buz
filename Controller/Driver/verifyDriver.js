@@ -16,7 +16,8 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
   const distance = R * c;
   return distance;
 }
-const verifyDriver= async (req, res) => {
+
+const verifyDriver = async (req, res) => {
   try {
     const { busNumber, latitude, longitude } = req.body;
 
@@ -30,15 +31,21 @@ const verifyDriver= async (req, res) => {
     }
 
     const busLocation = await Location.findOne({ busId: bus._id }).sort({ timestamp: -1 });
-    if (busLocation) {
-      const distance = calculateDistance(latitude, longitude, busLocation.latitude, busLocation.longitude);
-      if (distance > 300) {
-        return res.status(403).json({ error: 'You are not allowed to connect. Please get near the bus.' });
-      }
+
+    if (!busLocation) {
+      bus.driverId = req.body.Devicetoken;
+      bus.avilable = true;
+      await bus.save();
+      return res.status(200).json({ message: 'Driver authenticated successfully', bus });
+    }
+
+    const distance = calculateDistance(latitude, longitude, busLocation.latitude, busLocation.longitude);
+    if (distance > 300) {
+      return res.status(403).json({ error: 'You are not allowed to connect. Please get near the bus.' });
     }
 
     bus.driverId = req.body.Devicetoken;
-    bus.avilable=true
+    bus.avilable = true;
     await bus.save();
 
     res.status(200).json({ message: 'Driver authenticated successfully', bus });
@@ -48,4 +55,4 @@ const verifyDriver= async (req, res) => {
   }
 };
 
-module.exports = {verifyDriver};
+module.exports = { verifyDriver };
