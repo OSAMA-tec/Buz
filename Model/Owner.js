@@ -28,7 +28,6 @@ const ownerBusSchema = new mongoose.Schema({
   },
   registrationNumber: {
     type: String,
-    unique: true
   },
   establishedYear: {
     type: Number,
