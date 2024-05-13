@@ -1,7 +1,8 @@
 const { User } = require('../../../Model/User');
-const {OwnerBus} = require('../../../Model/Owner');
+const { OwnerBus } = require('../../../Model/Owner');
 const bcrypt = require('bcrypt');
 const sendEmail = require('../../../Notification-Worker/sendEmail');
+
 const addOwner = async (req, res) => {
     try {
         const {
@@ -19,6 +20,10 @@ const addOwner = async (req, res) => {
 
         if (req.user.role !== 'admin') {
             return res.status(403).json({ error: 'You are not authorized to add bus owners' });
+        }
+
+        if (!name || !email || !phoneNo || !contactDetails || !companyName || !companyLocation || !numberOfBuses || !contactPerson || !registrationNumber || !establishedYear) {
+            return res.status(400).json({ error: 'Missing required fields' });
         }
 
         const existingOwner = await User.findOne({ email });
@@ -40,6 +45,9 @@ const addOwner = async (req, res) => {
         });
 
         const savedOwner = await newOwner.save();
+        if (!savedOwner) {
+            return res.status(500).json({ error: 'Failed to save bus owner' });
+        }
 
         const newOwnerBus = new OwnerBus({
             userId: savedOwner._id,
@@ -51,7 +59,10 @@ const addOwner = async (req, res) => {
             establishedYear
         });
 
-        await newOwnerBus.save();
+        const savedOwnerBus = await newOwnerBus.save();
+        if (!savedOwnerBus) {
+            return res.status(500).json({ error: 'Failed to save owner bus details' });
+        }
 
         const emailSubject = 'Bus Owner Account Created';
         const emailBody = `
@@ -85,7 +96,13 @@ const addOwner = async (req, res) => {
         <p style="margin-top: 5px;">The Bus App Team</p>
       </div>
     `;
-        await sendEmail({ to: email, subject: emailSubject, html: emailBody });
+
+        try {
+            await sendEmail({ to: email, subject: emailSubject, html: emailBody });
+        } catch (error) {
+            console.error('Error sending email:', error);
+            return res.status(500).json({ error: 'Failed to send email' });
+        }
 
         res.status(201).json({ message: 'Bus owner added successfully' });
     } catch (error) {
@@ -94,5 +111,4 @@ const addOwner = async (req, res) => {
     }
 };
 
-
-module.exports = { addOwner }
+module.exports = { addOwner };
