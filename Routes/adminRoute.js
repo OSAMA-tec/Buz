@@ -8,6 +8,8 @@ const multer = require('multer');
 
 
 const { addOwner } = require('../Controller/Admin/Owner/addOwner');
+const { deleteOwner,getOwner } = require('../Controller/Admin/Owner/deleteOwner');
+const { updateOwner } = require('../Controller/Admin/Owner/updateOwner');
 const { getAllReports } = require('../Controller/Admin/Reports and Feedback/getReports');
 const { getAllFeedback } = require('../Controller/Admin/Reports and Feedback/getFeedbacks');
 
@@ -22,7 +24,14 @@ const { verifyTokenAdmin, verifyTokenUser, verifyTokenDriver } = require('../Mid
 
 
 //Owner
-router.post('/add/owner',verifyTokenAdmin, addOwner);                                                                    // -----
+router.post('/add/owner',verifyTokenAdmin, addOwner);                                                                       // -----
+router.delete('/delete/owner',verifyTokenAdmin, deleteOwner);                                                                    // -----
+router.put('/update/owner',verifyTokenAdmin, updateOwner);                                                                    // -----
+router.get('/get/owner',verifyTokenAdmin, getOwner);                                                                    // -----
+
+
+
+
 router.get('/reports',verifyTokenAdmin, getAllReports);                                                                  // -----working
 router.get('/feedbacks',verifyTokenAdmin, getAllFeedback);                                                               // -----working
 
