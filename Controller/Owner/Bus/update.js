@@ -3,11 +3,10 @@ const { uploadImageToFirebase } = require('../../../Firebase/uploadImage');
 
 const updateBus = async (req, res) => {
   try {
-    if (req.user.role !== 'admin') {
-      return res.status(403).json({ error: 'You are not authorized to update buses' });
+    if (req.user.role !== 'owner') {
+      return res.status(403).json({ error: 'You are not authorized to delete buses' });
     }
-
-    const { busId, name, number, type, capacity, amenities, routeId,busType } = req.body;
+    const { busId, name, number, type, capacity, amenities, routeId, busType } = req.body;
 
     const bus = await Bus.findById(busId);
     if (!bus) {
@@ -18,9 +17,18 @@ const updateBus = async (req, res) => {
     if (number) bus.number = number;
     if (type) bus.type = type;
     if (capacity) bus.capacity = capacity;
-    if (amenities) bus.amenities = amenities;
     if (routeId) bus.routeId = routeId;
     if (busType) bus.busType = busType;
+
+    if (amenities) {
+      try {
+        const parsedAmenities = JSON.parse(amenities);
+        bus.amenities = parsedAmenities;
+      } catch (error) {
+        console.error('Error parsing amenities:', error);
+        return res.status(400).json({ error: 'Invalid amenities format' });
+      }
+    }
 
     if (req.file) {
       const busLogo = req.file;

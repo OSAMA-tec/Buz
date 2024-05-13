@@ -33,7 +33,7 @@ router.put('/route',BusOwner, deleteRoute);                                     
 
 //   Add Bus
 router.post('/bus',BusOwner,upload.single('Logo'), addBus);                                                    // -----working
-router.put('/bus',BusOwner,upload.single('Logo'), updateBus);                                                  // -----
+router.put('/bus',BusOwner,upload.single('Logo'), updateBus);                                                  // -----working
 router.delete('/bus',BusOwner,upload.single('Logo'), deleteBus);                                               // -----
 router.get('/bus',BusOwner, getAllBusesByOwner);                                                               // -----
 
