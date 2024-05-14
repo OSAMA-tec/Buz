@@ -16,11 +16,22 @@ const { getAllFeedback } = require('../Controller/Admin/Reports and Feedback/get
 
 
 
+
+const { addAd,updateAd,deleteAd,incrementClickCount,getAdById } = require('../Controller/Admin/Ads/adsController');
+
+
+
+
 const upload = multer({ storage: multer.memoryStorage() });
 const { verifyTokenAdmin, verifyTokenUser, verifyTokenDriver } = require('../Middleware/jwt')
 
 
 
+router.post('/ads', upload.fields([{ name: 'pic' }, { name: 'video' }]),verifyTokenAdmin, addAd);
+router.put('/ads', upload.fields([{ name: 'pic' }, { name: 'video' }]),verifyTokenAdmin, updateAd);
+router.delete('/ads',verifyTokenAdmin,deleteAd);
+router.post('/ads/count',verifyTokenUser, incrementClickCount);
+router.get('/ads',verifyTokenAdmin, getAdById);
 
 
 //Owner
