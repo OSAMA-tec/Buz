@@ -8,6 +8,7 @@ const multer = require('multer');
 
 
 const { addOwner } = require('../Controller/Admin/Owner/addOwner');
+const { getAllBusesWithDetails } = require('../Controller/Admin/Busses/getBusses');
 const { deleteOwner,getOwner } = require('../Controller/Admin/Owner/deleteOwner');
 const { updateOwner } = require('../Controller/Admin/Owner/updateOwner');
 const { getAllReports } = require('../Controller/Admin/Reports and Feedback/getReports');
@@ -38,7 +39,13 @@ router.get('/ads',verifyTokenAdmin, getAdById);
 router.post('/add/owner',verifyTokenAdmin, addOwner);                                                                       // -----
 router.delete('/delete/owner',verifyTokenAdmin, deleteOwner);                                                                    // -----
 router.put('/update/owner',verifyTokenAdmin, updateOwner);                                                                    // -----
-router.get('/get/owner',verifyTokenAdmin, getOwner);                                                                    // -----
+router.get('/get/owner',verifyTokenAdmin, getOwner);   
+
+
+
+
+// -----
+router.get('/get/busses',verifyTokenAdmin, getAllBusesWithDetails);                                                                    // -----
 
 
 
