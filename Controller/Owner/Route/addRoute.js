@@ -7,7 +7,20 @@ const createRoute = async (req, res) => {
       return res.status(403).json({ error: 'You are not authorized to create routes' });
     }
 
-    const { origin, destination, stops, distance, estimatedTravelTime, waypoints } = req.body;
+    const { 
+      origin, originlon, originlat, 
+      destination, destinationlon, destinationlat, 
+      stops, stopslon, stopslat, 
+      distance, estimatedTravelTime, waypoints 
+    } = req.body;
+
+    if (!origin || !originlon || !originlat || !destination || !destinationlon || !destinationlat) {
+      return res.status(400).json({ error: 'Origin and destination with their coordinates are required' });
+    }
+
+    if (stops && (stops.length !== stopslon.length || stops.length !== stopslat.length)) {
+      return res.status(400).json({ error: 'Stops and their coordinates must have the same length' });
+    }
 
     const ownerBus = await OwnerBus.findOne({ userId: req.user._id });
     if (!ownerBus) {
@@ -15,9 +28,13 @@ const createRoute = async (req, res) => {
     }
 
     const newRoute = new Route({
-      origin,
-      destination,
-      stops,
+      origin: { name: origin, longitude: originlon, latitude: originlat },
+      destination: { name: destination, longitude: destinationlon, latitude: destinationlat },
+      stops: stops.map((stop, index) => ({
+        name: stop,
+        longitude: stopslon[index],
+        latitude: stopslat[index]
+      })),
       distance,
       estimatedTravelTime,
       waypoints,
@@ -32,6 +49,7 @@ const createRoute = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 
 
