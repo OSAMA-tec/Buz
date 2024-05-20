@@ -13,6 +13,7 @@ const { deleteOwner,getOwner } = require('../Controller/Admin/Owner/deleteOwner'
 const { updateOwner } = require('../Controller/Admin/Owner/updateOwner');
 const { getAllReports } = require('../Controller/Admin/Reports and Feedback/getReports');
 const { getAllFeedback } = require('../Controller/Admin/Reports and Feedback/getFeedbacks');
+const { getBusStatistics } = require('../Controller/Admin/Dashboard/generateDashboard');
 
 
 
@@ -52,6 +53,12 @@ router.get('/get/busses',verifyTokenAdmin, getAllBusesWithDetails);             
 
 router.get('/reports',verifyTokenAdmin, getAllReports);                                                                  // -----working
 router.get('/feedbacks',verifyTokenAdmin, getAllFeedback);                                                               // -----working
+
+
+
+
+
+router.get('/dashboard',verifyTokenAdmin, getBusStatistics);                                                               // -----working
 
 
 
