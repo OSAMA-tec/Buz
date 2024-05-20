@@ -1,5 +1,6 @@
 const mongoose = require('mongoose')
 const adsSchema = new mongoose.Schema({
+    AdsName: { type: String},
     AdsLink: { type: String},
     picLink: { type: String },
     videoLink: { type: String },

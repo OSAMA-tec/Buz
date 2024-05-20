@@ -12,7 +12,7 @@ const addAd = async (req, res) => {
         return res.status(403).json({ error: 'You are not authorized to add bus owners' });
     }
 
-    const { AdsLink } = req.body;
+    const { AdsLink,AdsName } = req.body;
     let picLink = '';
     let videoLink = '';
     if (req.files && req.files.pic) {
@@ -27,6 +27,7 @@ const addAd = async (req, res) => {
     }
 
     const newAd = new Ads({
+      AdsName,
       AdsLink,
       picLink,
       videoLink,
@@ -50,7 +51,7 @@ const updateAd = async (req, res) => {
     }
 
     const { id } = req.body;
-    const { AdsLink } = req.body;
+    const { AdsLink,AdsName } = req.body;
     let picLink = '';
     let videoLink = '';
 
@@ -68,6 +69,7 @@ const updateAd = async (req, res) => {
     const updatedAd = await Ads.findByIdAndUpdate(
       id,
       {
+        AdsName,
         AdsLink,
         picLink: picLink || undefined,
         videoLink: videoLink || undefined,
