@@ -10,16 +10,20 @@ const getAllBusesWithDetails = async (req, res) => {
         if (req.user.role !== 'admin') {
             return res.status(403).json({ error: 'You are not authorized to add bus owners' });
         }
+
         const busDetails = await Promise.all(buses.map(async (bus) => {
+            console.log(bus.routeId);
+            console.log(bus.ownerId);
+
             const owner = await OwnerBus.findById(bus.ownerId).exec();
             const route = await Route.findById(bus.routeId).exec();
-            const locations = await Location.find({ busId: bus._id }).exec();
+            const locations = await Location.find({ busId: bus._id }).exec() || [];
 
             return {
                 ...bus.toObject(),
-                owner,
-                route,
-                locations,
+                owner: owner || [],
+                route: route || [],
+                locations: locations.length ? locations : []
             };
         }));
 
