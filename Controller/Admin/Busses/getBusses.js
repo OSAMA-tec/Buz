@@ -15,14 +15,14 @@ const getAllBusesWithDetails = async (req, res) => {
             console.log(bus.routeId);
             console.log(bus.ownerId);
 
-            const owner = await OwnerBus.findById(bus.ownerId).exec();
+            const owner = await OwnerBus.findOne({ _id: bus.ownerId }).exec();
             const route = await Route.findById(bus.routeId).exec();
             const locations = await Location.find({ busId: bus._id }).exec() || [];
 
             return {
                 ...bus.toObject(),
-                owner: owner || [],
-                route: route || [],
+                owner: owner ? owner.toObject() : null,
+                route: route ? route.toObject() : null,
                 locations: locations.length ? locations : []
             };
         }));

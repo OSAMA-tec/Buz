@@ -46,7 +46,7 @@ router.get('/get/owner',verifyTokenAdmin, getAllBusesWithDetails);
 
 
 // -----
-// router.get('/get/busses',verifyTokenAdmin, getAllBusesWithDetails);                                                                    // -----
+router.get('/get/busses',verifyTokenAdmin, getAllBusesWithDetails);                                                                    // -----
 
 
 
