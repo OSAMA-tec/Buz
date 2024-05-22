@@ -40,7 +40,7 @@ router.get('/ads',verifyTokenAdmin, getAdById);
 router.post('/add/owner',verifyTokenAdmin, addOwner);                                                                       // -----
 router.delete('/delete/owner',verifyTokenAdmin, deleteOwner);                                                                    // -----
 router.put('/update/owner',verifyTokenAdmin, updateOwner);                                                                    // -----
-router.get('/get/owner',verifyTokenAdmin, getAllBusesWithDetails);   
+router.get('/get/owner',verifyTokenAdmin, getOwner);   
 
 
 
