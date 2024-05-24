@@ -124,7 +124,7 @@ const signin = async (req, res) => {
       token = jwt.sign(payload, process.env.secretUser, options);
     }
 
-    res.status(200).json({ message: 'Signin successful', token });
+    res.status(200).json({ message: 'Signin successful', token,role:user.role });
   } catch (error) {
     console.error('Error during signin:', error);
     res.status(500).json({ error: 'Internal server error' });
