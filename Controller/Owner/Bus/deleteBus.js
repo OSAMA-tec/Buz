@@ -1,6 +1,7 @@
 const { Bus } = require('../../../Model/Bus');
 const { Location } = require('../../../Model/location');
 const { OwnerBus } = require('../../../Model/Owner');
+const { Route } = require('../../../Model/route');
 
 const deleteBus = async (req, res) => {
   try {
@@ -18,7 +19,6 @@ const deleteBus = async (req, res) => {
     const ownerId = req.user._id;
 
     const owner = await OwnerBus.findOne({ userId: ownerId });
-
     if (!owner) {
       return res.status(404).json({ error: 'Owner not found' });
     }
@@ -29,9 +29,14 @@ const deleteBus = async (req, res) => {
 
     await Location.deleteMany({ busId: bus._id });
 
-    await Bus.findByIdAndDelete(busId);
+    if (bus.routeId) {
+      // Delete the associated route if it exists
+      await Route.findByIdAndDelete(bus.routeId);
+    }
 
-    res.status(200).json({ message: 'Bus and associated locations deleted successfully' });
+    await Bus.findByIdAndDelete(bus._id);
+
+    res.status(200).json({ message: 'Bus, associated locations, and route deleted successfully' });
   } catch (error) {
     console.error('Error deleting bus:', error);
     res.status(500).json({ error: 'Internal server error' });
