@@ -2,6 +2,7 @@ const { Bus } = require('../../../Model/Bus');
 const { OwnerBus } = require('../../../Model/Owner');
 const { Route } = require('../../../Model/route');
 const { Location } = require('../../../Model/location');
+const mongoose = require('mongoose');
 
 const getAllBusesWithDetails = async (req, res) => {
     try {
@@ -14,9 +15,15 @@ const getAllBusesWithDetails = async (req, res) => {
         const busDetails = await Promise.all(buses.map(async (bus) => {
             console.log(bus.routeId);
             console.log(bus.ownerId);
-            const owner = await OwnerBus.findById(bus.ownerId).exec();
-            const route = await Route.findById(bus.routeId).exec();
-            const locations = await Location.find({ busId: bus._id }).exec() || [];
+            
+            // Validate routeId
+            const route = mongoose.Types.ObjectId.isValid(bus.routeId) ? await Route.findById(bus.routeId).exec() : null;
+            
+            // Validate ownerId
+            const owner = mongoose.Types.ObjectId.isValid(bus.ownerId) ? await OwnerBus.findById(bus.ownerId).exec() : null;
+            
+            // Fetch locations
+            const locations = mongoose.Types.ObjectId.isValid(bus._id) ? await Location.find({ busId: bus._id }).exec() : [];
 
             return {
                 ...bus.toObject(),
