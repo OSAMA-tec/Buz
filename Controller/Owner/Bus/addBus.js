@@ -3,6 +3,8 @@ const { Bus } = require('../../../Model/Bus');
 const { Location } = require('../../../Model/location');
 const { OwnerBus } = require('../../../Model/Owner');
 const { uploadImageToFirebase } = require('../../../Firebase/uploadImage');
+const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Types;
 
 const addBus = async (req, res) => {
   try {
@@ -130,6 +132,7 @@ const addBus = async (req, res) => {
   }
 };
 
+
 const getAllBusesByOwner = async (req, res) => {
   try {
     if (req.user.role !== 'owner') {
@@ -150,7 +153,12 @@ const getAllBusesByOwner = async (req, res) => {
 
     const busesWithDetails = await Promise.all(buses.map(async (bus) => {
       const location = await Location.findOne({ busId: bus._id });
-      const route = await Route.findById(bus.routeId);
+
+      // Validate routeId before querying
+      let route = null;
+      if (ObjectId.isValid(bus.routeId)) {
+        route = await Route.findById(bus.routeId);
+      }
 
       return {
         ...bus._doc,
