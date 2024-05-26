@@ -35,7 +35,7 @@ const addBus = async (req, res) => {
     let amenities = {};
     if (req.body.amenities) {
       try {
-        amenities = JSON.parse(req.body.amenities);
+        amenities = req.body.amenities;
       } catch (error) {
         console.error('Error parsing amenities:', error);
         return res.status(400).json({ error: 'Invalid amenities format' });
@@ -131,6 +131,7 @@ const addBus = async (req, res) => {
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 
 const getAllBusesByOwner = async (req, res) => {
