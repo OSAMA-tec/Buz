@@ -62,17 +62,18 @@ const updateOwner = async (req, res) => {
     await ownerBus.save();
 
     if (email && email !== owner.email) {
-      const emailSubject = 'Bus Owner Account Updated';
+      const emailSubject = 'Cuenta de Propietario de Autobús Actualizada';
       const emailBody = `
         <div>
-          <p>Dear ${name},</p>
-          <p>Your bus owner account has been successfully updated. Your updated email is: ${email}</p>
-          <p>If you have any questions or need assistance, please don't hesitate to contact our support team.</p>
-          <p>Thank you for using our service.</p>
-          <p>Best regards,</p>
-          <p>The Bus App Team</p>
+          <p>Estimado ${name},</p>
+          <p>Su cuenta de propietario de autobús ha sido actualizada exitosamente. Su correo electrónico actualizado es: ${email}</p>
+          <p>Si tiene alguna pregunta o necesita asistencia, no dude en ponerse en contacto con nuestro equipo de soporte.</p>
+          <p>Gracias por utilizar nuestro servicio.</p>
+          <p>Saludos cordiales,</p>
+          <p>El Equipo de Ahi voy & Ahi viene</p>
         </div>
       `;
+      
       await sendEmail({ to: email, subject: emailSubject, html: emailBody });
     }
 

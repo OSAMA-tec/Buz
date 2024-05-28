@@ -64,38 +64,39 @@ const addOwner = async (req, res) => {
             return res.status(500).json({ error: 'Failed to save owner bus details' });
         }
 
-        const emailSubject = 'Bus Owner Account Created';
+        const emailSubject = 'Cuenta de Propietario de Autobús Creada';
         const emailBody = `
-      <div style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #333333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #cccccc; border-radius: 5px;">
-        <div style="text-align: center; margin-bottom: 30px;">
-          <img src="https://example.com/logo.png" alt="Bus App Logo" style="max-width: 200px;">
-        </div>
+          <div style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #333333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #cccccc; border-radius: 5px;">
+            <div style="text-align: center; margin-bottom: 30px;">
+              <img src="https://example.com/logo.png" alt="Logo de Bus App" style="max-width: 200px;">
+            </div>
+            
+            <p>Estimado ${name},</p>
+            
+            <p>¡Felicitaciones! Su cuenta de propietario de autobús ha sido creada exitosamente. Por favor, utilice las siguientes credenciales para iniciar sesión:</p>
+            
+            <table style="width: 100%; margin-bottom: 20px;">
+              <tr>
+                <td style="padding: 10px; background-color: #f2f2f2; border: 1px solid #cccccc; font-weight: bold;">Correo electrónico:</td>
+                <td style="padding: 10px; border: 1px solid #cccccc;">${email}</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px; background-color: #f2f2f2; border: 1px solid #cccccc; font-weight: bold;">Contraseña:</td>
+                <td style="padding: 10px; border: 1px solid #cccccc;">${password}</td>
+              </tr>
+            </table>
+            
+            <p style="color: #ff0000; font-weight: bold;">Importante: Por favor, cambie su contraseña después de iniciar sesión por primera vez para garantizar la seguridad de su cuenta.</p>
+            
+            <p>Si tiene alguna pregunta o necesita asistencia, no dude en ponerse en contacto con nuestro equipo de soporte en <a href="mailto:support@busapp.com" style="color: #007bff; text-decoration: none;">support@busapp.com</a>.</p>
+            
+            <p>Gracias por elegir Bus App. Esperamos brindarle una experiencia de gestión de autobuses sin problemas.</p>
+            
+            <p style="margin-bottom: 0;">Saludos cordiales,</p>
+            <p style="margin-top: 5px;">El Equipo de Ahi voy & Ahi viene</p>
+          </div>
+        `;
         
-        <p>Dear ${name},</p>
-        
-        <p>Congratulations! Your bus owner account has been successfully created. Please use the following credentials to log in:</p>
-        
-        <table style="width: 100%; margin-bottom: 20px;">
-          <tr>
-            <td style="padding: 10px; background-color: #f2f2f2; border: 1px solid #cccccc; font-weight: bold;">Email:</td>
-            <td style="padding: 10px; border: 1px solid #cccccc;">${email}</td>
-          </tr>
-          <tr>
-            <td style="padding: 10px; background-color: #f2f2f2; border: 1px solid #cccccc; font-weight: bold;">Password:</td>
-            <td style="padding: 10px; border: 1px solid #cccccc;">${password}</td>
-          </tr>
-        </table>
-        
-        <p style="color: #ff0000; font-weight: bold;">Important: Please change your password after logging in for the first time to ensure the security of your account.</p>
-        
-        <p>If you have any questions or need assistance, please don't hesitate to contact our support team at <a href="mailto:support@busapp.com" style="color: #007bff; text-decoration: none;">support@busapp.com</a>.</p>
-        
-        <p>Thank you for choosing Bus App. We look forward to providing you with a seamless bus management experience.</p>
-        
-        <p style="margin-bottom: 0;">Best regards,</p>
-        <p style="margin-top: 5px;">The Bus App Team</p>
-      </div>
-    `;
 
         try {
             await sendEmail({ to: email, subject: emailSubject, html: emailBody });

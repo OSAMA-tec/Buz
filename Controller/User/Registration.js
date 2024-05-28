@@ -31,7 +31,7 @@ const signup = async (req, res) => {
 
     await newUser.save();
 
-    const emailSubject = 'OTP Verification';
+    const emailSubject = 'Verificación de OTP';
     const emailHtml = `
       <!DOCTYPE html>
       <html>
@@ -64,15 +64,16 @@ const signup = async (req, res) => {
         </head>
         <body>
           <div class="container">
-            <h1>OTP Verification</h1>
-            <p>Dear ${newUser.name},</p>
-            <p>Please use the following OTP to verify your account:</p>
+            <h1>Verificación de OTP</h1>
+            <p>Estimado ${newUser.name},</p>
+            <p>Por favor, utilice el siguiente OTP para verificar su cuenta:</p>
             <p class="otp">${otp}</p>
-            <p>Best regards,<br>The Bus App Team</p>
+            <p>Saludos cordiales,<br>El Equipo de Ahi voy & Ahi viene</p>
           </div>
         </body>
       </html>
     `;
+
     await sendEmail({ to: email, subject: emailSubject, html: emailHtml });
 
     res.status(201).json({ message: 'User created successfully. Please verify your account using the OTP sent to your email.' });

@@ -17,8 +17,7 @@ const forgotPassword = async (req, res) => {
     user.otpVerified = false;
     user.otpPurpose = 'forgotPassword';
     await user.save();
-
-    const emailSubject = 'Password Reset OTP';
+    const emailSubject = 'OTP para Restablecer Contraseña';
     const emailHtml = `
       <!DOCTYPE html>
       <html>
@@ -51,16 +50,17 @@ const forgotPassword = async (req, res) => {
         </head>
         <body>
           <div class="container">
-            <h1>Password Reset OTP</h1>
-            <p>Dear ${user.name},</p>
-            <p>You have requested to reset your password. Please use the following OTP to verify your identity:</p>
+            <h1>OTP para Restablecer Contraseña</h1>
+            <p>Estimado ${user.name},</p>
+            <p>Ha solicitado restablecer su contraseña. Por favor, use el siguiente OTP para verificar su identidad:</p>
             <p class="otp">${otp}</p>
-            <p>If you did not request a password reset, please ignore this email.</p>
-            <p>Best regards,<br>The Bus App Team</p>
+            <p>Si no solicitó un restablecimiento de contraseña, por favor ignore este correo electrónico.</p>
+            <p>Saludos cordiales,<br>El Equipo de Ahi voy & Ahi viene</p>
           </div>
         </body>
       </html>
     `;
+
     await sendEmail({ to: email, subject: emailSubject, html: emailHtml });
 
     res.status(200).json({ message: 'OTP sent successfully' });
