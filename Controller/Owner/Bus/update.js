@@ -28,6 +28,11 @@ const updateBus = async (req, res) => {
       waypoints
     } = req.body;
 
+    // Validate required fields
+    if (!busId) {
+      return res.status(400).json({ error: 'Bus ID is required' });
+    }
+    console.log(req.body)
     // Parse the amenities object from the form data
     let amenities = {};
     if (req.body.amenities) {
@@ -43,6 +48,12 @@ const updateBus = async (req, res) => {
     const stops = req.body.stops ? JSON.parse(req.body.stops) : [];
     const stopslon = req.body.stopslon ? JSON.parse(req.body.stopslon) : [];
     const stopslat = req.body.stopslat ? JSON.parse(req.body.stopslat) : [];
+    console.log(stops)
+
+    // Validate stops array lengths
+    if (stops.length !== stopslon.length || stops.length !== stopslat.length) {
+      return res.status(400).json({ error: 'Stops arrays must have the same length' });
+    }
 
     const bus = await Bus.findById(busId);
     if (!bus) {
@@ -92,23 +103,34 @@ const updateBus = async (req, res) => {
       }
     }
 
-    // Update the route if stops are provided
+    // Update the route if stops are provided and routeId exists
     if (stops && Array.isArray(stops) && stops.length > 0 && routeId) {
       const route = await Route.findById(routeId);
-      if (route) {
-        route.stops = stops.map((stop, index) => ({
-          name: stop,
-          longitude: stopslon[index],
-          latitude: stopslat[index],
-        }));
+      if (!route) {
+        return res.status(404).json({ error: 'Route not found' });
+      }
 
+      route.stops = stops.map((stop, index) => ({
+        name: stop,
+        longitude: stopslon[index],
+        latitude: stopslat[index],
+      }));
+
+      try {
         await route.save();
+      } catch (error) {
+        console.error('Error updating route:', error);
+        return res.status(500).json({ error: 'Failed to update route' });
       }
     }
 
-    const updatedBus = await bus.save();
-
-    res.status(200).json(updatedBus);
+    try {
+      const updatedBus = await bus.save();
+      res.status(200).json(updatedBus);
+    } catch (error) {
+      console.error('Error updating bus:', error);
+      res.status(500).json({ error: 'Failed to update bus' });
+    }
   } catch (error) {
     console.error('Error updating bus:', error);
     res.status(500).json({ error: 'Internal server error' });

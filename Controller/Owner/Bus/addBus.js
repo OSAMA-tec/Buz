@@ -133,7 +133,6 @@ const addBus = async (req, res) => {
 };
 
 
-
 const getAllBusesByOwner = async (req, res) => {
   try {
     if (req.user.role !== 'owner') {
@@ -168,12 +167,22 @@ const getAllBusesByOwner = async (req, res) => {
       };
     }));
 
-    res.status(200).json(busesWithDetails);
+    const totalBusesCount = buses.length;
+    const totalStoppedBusesCount = buses.filter(bus => !bus.driverId).length;
+    const totalRunningBusesCount = totalBusesCount - totalStoppedBusesCount;
+
+    res.status(200).json({
+      buses: busesWithDetails,
+      totalBusesCount,
+      totalStoppedBusesCount,
+      totalRunningBusesCount
+    });
   } catch (error) {
     console.error('Error getting buses:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 };
+
 
 
 
