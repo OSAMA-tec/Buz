@@ -68,7 +68,7 @@ const addOwner = async (req, res) => {
         const emailBody = `
           <div style="font-family: Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #333333; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #cccccc; border-radius: 5px;">
             <div style="text-align: center; margin-bottom: 30px;">
-              <img src="https://example.com/logo.png" alt="Logo de Bus App" style="max-width: 200px;">
+              <img src="../../../pics/buslogo-removebg-preview.png" alt="Logo de Bus App" style="max-width: 200px;">
             </div>
             
             <p>Estimado ${name},</p>

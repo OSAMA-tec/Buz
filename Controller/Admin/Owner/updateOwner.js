@@ -64,15 +64,51 @@ const updateOwner = async (req, res) => {
     if (email && email !== owner.email) {
       const emailSubject = 'Cuenta de Propietario de Autobús Actualizada';
       const emailBody = `
-        <div>
-          <p>Estimado ${name},</p>
-          <p>Su cuenta de propietario de autobús ha sido actualizada exitosamente. Su correo electrónico actualizado es: ${email}</p>
-          <p>Si tiene alguna pregunta o necesita asistencia, no dude en ponerse en contacto con nuestro equipo de soporte.</p>
-          <p>Gracias por utilizar nuestro servicio.</p>
-          <p>Saludos cordiales,</p>
-          <p>El Equipo de Ahi voy & Ahi viene</p>
-        </div>
-      `;
+      <!DOCTYPE html>
+      <html>
+        <head>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              background-color: #f4f4f4;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              padding: 20px;
+              background-color: #ffffff;
+              border-radius: 5px;
+              box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            }
+            .logo {
+              display: block;
+              margin: 0 auto;
+              max-width: 200px;
+              height: auto;
+            }
+            h1 {
+              color: #333333;
+            }
+            p {
+              color: #666666;
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <img src="../../../pics/buslogo-removebg-preview.png" alt="Logo" class="logo" />
+            <h1>Actualización de Cuenta de Propietario de Autobús</h1>
+            <p>Estimado ${name},</p>
+            <p>Su cuenta de propietario de autobús ha sido actualizada exitosamente. Su correo electrónico actualizado es: ${email}</p>
+            <p>Si tiene alguna pregunta o necesita asistencia, no dude en ponerse en contacto con nuestro equipo de soporte.</p>
+            <p>Gracias por utilizar nuestro servicio.</p>
+            <p>Saludos cordiales,</p>
+            <p>El Equipo de Ahi voy & Ahi viene</p>
+          </div>
+        </body>
+      </html>
+    `;
+    
       
       await sendEmail({ to: email, subject: emailSubject, html: emailBody });
     }
