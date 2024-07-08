@@ -23,46 +23,44 @@ const addOwner = async (req, res) => {
         }
 
         if (!name) {
-            return res.status(400).json({ error: 'Name is required' });
+            return res.status(400).json({ error: 'Se requiere el nombre' });
         }
-        
-        if (!email) {
-            return res.status(400).json({ error: 'Email is required' });
-        }
-        
-        if (!phoneNo) {
-            return res.status(400).json({ error: 'Phone number is required' });
-        }
-        
-        if (!contactDetails) {
-            return res.status(400).json({ error: 'Contact details are required' });
-        }
-        
-        if (!companyName) {
-            return res.status(400).json({ error: 'Company name is required' });
-        }
-        
-        if (!companyLocation) {
-            return res.status(400).json({ error: 'Company location is required' });
-        }
-        
-        if (!numberOfBuses) {
-            return res.status(400).json({ error: 'Number of buses is required' });
-        }
-        
-        if (!contactPerson) {
-            return res.status(400).json({ error: 'Contact person is required' });
-        }
-        
-        if (!registrationNumber) {
-            return res.status(400).json({ error: 'Registration number is required' });
-        }
-        
-        if (!establishedYear) {
-            return res.status(400).json({ error: 'Established year is required' });
-        }
-        
 
+        if (!email) {
+            return res.status(400).json({ error: 'Se requiere el correo electrónico' });
+        }
+
+        if (!phoneNo) {
+            return res.status(400).json({ error: 'Se requiere el número de teléfono' });
+        }
+
+        if (!contactDetails) {
+            return res.status(400).json({ error: 'Se requieren los detalles de contacto' });
+        }
+
+        if (!companyName) {
+            return res.status(400).json({ error: 'Se requiere el nombre de la empresa' });
+        }
+
+        if (!companyLocation) {
+            return res.status(400).json({ error: 'Se requiere la ubicación de la empresa' });
+        }
+
+        if (!numberOfBuses) {
+            return res.status(400).json({ error: 'Se requiere el número de autobuses' });
+        }
+
+        if (!contactPerson) {
+            return res.status(400).json({ error: 'Se requiere la persona de contacto' });
+        }
+
+        if (!registrationNumber) {
+            return res.status(400).json({ error: 'Se requiere el número de registro' });
+        }
+
+        if (!establishedYear) {
+            return res.status(400).json({ error: 'Se requiere el año de establecimiento' });
+        }
         const existingOwner = await User.findOne({ email });
         if (existingOwner) {
             return res.status(400).json({ error: 'Bus owner already exists' });
@@ -133,7 +131,7 @@ const addOwner = async (req, res) => {
             <p style="margin-top: 5px;">El Equipo de Ahi voy & Ahi viene</p>
           </div>
         `;
-        
+
 
         try {
             await sendEmail({ to: email, subject: emailSubject, html: emailBody });

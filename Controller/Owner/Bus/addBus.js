@@ -48,57 +48,57 @@ const addBus = async (req, res) => {
     const stopslat = req.body.stopslat ? JSON.parse(req.body.stopslat) : [];
 
     if (!name) {
-      return res.status(400).json({ error: 'Name is required' });
+      return res.status(400).json({ error: 'Se requiere el nombre' });
     }
-    
+
     if (!number) {
-      return res.status(400).json({ error: 'Number is required' });
+      return res.status(400).json({ error: 'Se requiere el número' });
     }
-    
+
     if (!type) {
-      return res.status(400).json({ error: 'Type is required' });
+      return res.status(400).json({ error: 'Se requiere el tipo' });
     }
-    
+
     if (capacity === undefined) {
-      return res.status(400).json({ error: 'Capacity is required' });
+      return res.status(400).json({ error: 'Se requiere la capacidad' });
     }
-    
+
     if (!latitude) {
-      return res.status(400).json({ error: 'Latitude is required' });
+      return res.status(400).json({ error: 'Se requiere la latitud' });
     }
-    
+
     if (!longitude) {
-      return res.status(400).json({ error: 'Longitude is required' });
+      return res.status(400).json({ error: 'Se requiere la longitud' });
     }
-    
+
     if (!busType) {
-      return res.status(400).json({ error: 'Bus type is required' });
+      return res.status(400).json({ error: 'Se requiere el tipo de autobús' });
     }
-    
+
     if (!origin) {
-      return res.status(400).json({ error: 'Origin is required' });
+      return res.status(400).json({ error: 'Se requiere el origen' });
     }
-    
+
     if (originlon === undefined) {
-      return res.status(400).json({ error: 'Origin longitude is required' });
+      return res.status(400).json({ error: 'Se requiere la longitud de origen' });
     }
-    
+
     if (originlat === undefined) {
-      return res.status(400).json({ error: 'Origin latitude is required' });
+      return res.status(400).json({ error: 'Se requiere la latitud de origen' });
     }
-    
+
     if (!destination) {
-      return res.status(400).json({ error: 'Destination is required' });
+      return res.status(400).json({ error: 'Se requiere el destino' });
     }
-    
+
     if (destinationlon === undefined) {
-      return res.status(400).json({ error: 'Destination longitude is required' });
+      return res.status(400).json({ error: 'Se requiere la longitud de destino' });
     }
-    
+
     if (destinationlat === undefined) {
-      return res.status(400).json({ error: 'Destination latitude is required' });
+      return res.status(400).json({ error: 'Se requiere la latitud de destino' });
     }
-    
+
 
     // Convert estimatedTravelTime to a number
     const parsedEstimatedTravelTime = parseInt(estimatedTravelTime, 10);
@@ -236,4 +236,4 @@ const getAllBusesByOwner = async (req, res) => {
 
 
 
-module.exports = { addBus,getAllBusesByOwner };
+module.exports = { addBus, getAllBusesByOwner };
