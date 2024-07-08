@@ -22,9 +22,46 @@ const addOwner = async (req, res) => {
             return res.status(403).json({ error: 'You are not authorized to add bus owners' });
         }
 
-        if (!name || !email || !phoneNo || !contactDetails || !companyName || !companyLocation || !numberOfBuses || !contactPerson || !registrationNumber || !establishedYear) {
-            return res.status(400).json({ error: 'Missing required fields' });
+        if (!name) {
+            return res.status(400).json({ error: 'Name is required' });
         }
+        
+        if (!email) {
+            return res.status(400).json({ error: 'Email is required' });
+        }
+        
+        if (!phoneNo) {
+            return res.status(400).json({ error: 'Phone number is required' });
+        }
+        
+        if (!contactDetails) {
+            return res.status(400).json({ error: 'Contact details are required' });
+        }
+        
+        if (!companyName) {
+            return res.status(400).json({ error: 'Company name is required' });
+        }
+        
+        if (!companyLocation) {
+            return res.status(400).json({ error: 'Company location is required' });
+        }
+        
+        if (!numberOfBuses) {
+            return res.status(400).json({ error: 'Number of buses is required' });
+        }
+        
+        if (!contactPerson) {
+            return res.status(400).json({ error: 'Contact person is required' });
+        }
+        
+        if (!registrationNumber) {
+            return res.status(400).json({ error: 'Registration number is required' });
+        }
+        
+        if (!establishedYear) {
+            return res.status(400).json({ error: 'Established year is required' });
+        }
+        
 
         const existingOwner = await User.findOne({ email });
         if (existingOwner) {

@@ -4,7 +4,7 @@ const busSchema = new mongoose.Schema({
   name: { type: String },
   logoUrl: { type: String },
   driverId: { type: String },
-  type: { type: String, enum: ["rural", "provincial", "regional"] },
+  type: { type: String, enum: ["rural", "provincial", "regional","local"] },
   capacity: { type: Number },
   amenities: {
     tv: { type: Boolean, default: false },

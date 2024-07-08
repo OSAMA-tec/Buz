@@ -47,10 +47,58 @@ const addBus = async (req, res) => {
     const stopslon = req.body.stopslon ? JSON.parse(req.body.stopslon) : [];
     const stopslat = req.body.stopslat ? JSON.parse(req.body.stopslat) : [];
 
-    if (!name || !number || !type || capacity === undefined || !latitude || !longitude || !busType ||
-      !origin || originlon === undefined || originlat === undefined || !destination || destinationlon === undefined || destinationlat === undefined) {
-      return res.status(400).json({ error: 'Required fields are missing' });
+    if (!name) {
+      return res.status(400).json({ error: 'Name is required' });
     }
+    
+    if (!number) {
+      return res.status(400).json({ error: 'Number is required' });
+    }
+    
+    if (!type) {
+      return res.status(400).json({ error: 'Type is required' });
+    }
+    
+    if (capacity === undefined) {
+      return res.status(400).json({ error: 'Capacity is required' });
+    }
+    
+    if (!latitude) {
+      return res.status(400).json({ error: 'Latitude is required' });
+    }
+    
+    if (!longitude) {
+      return res.status(400).json({ error: 'Longitude is required' });
+    }
+    
+    if (!busType) {
+      return res.status(400).json({ error: 'Bus type is required' });
+    }
+    
+    if (!origin) {
+      return res.status(400).json({ error: 'Origin is required' });
+    }
+    
+    if (originlon === undefined) {
+      return res.status(400).json({ error: 'Origin longitude is required' });
+    }
+    
+    if (originlat === undefined) {
+      return res.status(400).json({ error: 'Origin latitude is required' });
+    }
+    
+    if (!destination) {
+      return res.status(400).json({ error: 'Destination is required' });
+    }
+    
+    if (destinationlon === undefined) {
+      return res.status(400).json({ error: 'Destination longitude is required' });
+    }
+    
+    if (destinationlat === undefined) {
+      return res.status(400).json({ error: 'Destination latitude is required' });
+    }
+    
 
     // Convert estimatedTravelTime to a number
     const parsedEstimatedTravelTime = parseInt(estimatedTravelTime, 10);
