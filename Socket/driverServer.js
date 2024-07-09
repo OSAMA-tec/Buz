@@ -25,7 +25,7 @@ const driverSocketServer = (io) => {
         const bus = await Bus.findOne({ driverId: deviceToken });
         console.log(bus)
         if (!bus) {
-          throw new Error('Bus not found');
+          throw new Error('Autobús no encontrado.');
         }
 
         const existingLocation = await Location.findOne({ busId: bus._id });
@@ -47,7 +47,7 @@ const driverSocketServer = (io) => {
     //     const bus = await Bus.findOne({ driverId: deviceToken });
     //     console.log('bus before:', bus);
     //     if (!bus) {
-    //       throw new Error('Bus not found');
+    //       throw new Error('Autobús no encontrado.');
     //     }
 
     //     if (bus) {
@@ -67,7 +67,7 @@ const driverSocketServer = (io) => {
         const bus = await Bus.findOne({ driverId: deviceToken });
         console.log('bus before:', bus);
         if (!bus) {
-          throw new Error('Bus not found');
+          throw new Error('Autobús no encontrado.');
         }
 
         if (bus) {

@@ -22,12 +22,12 @@ const verifyDriver = async (req, res) => {
     const { busNumber, latitude, longitude } = req.body;
 
     if (!busNumber || !latitude || !longitude) {
-      return res.status(400).json({ error: 'Bus number, latitude, and longitude are required' });
+      return res.status(400).json({ error: 'Se requieren el número del autobús, la latitud y la longitud.' });
     }
 
     const bus = await Bus.findOne({ number: busNumber });
     if (!bus) {
-      return res.status(404).json({ error: 'Bus not found' });
+      return res.status(404).json({ error: 'Autobús no encontrado.' });
     }
 
     const busLocation = await Location.findOne({ busId: bus._id }).sort({ timestamp: -1 });
@@ -36,22 +36,22 @@ const verifyDriver = async (req, res) => {
       bus.driverId = req.body.Devicetoken;
       bus.avilable = true;
       await bus.save();
-      return res.status(200).json({ message: 'Driver authenticated successfully', bus });
+      return res.status(200).json({ message: 'Conductor autenticado con éxito.', bus });
     }
 
     const distance = calculateDistance(latitude, longitude, busLocation.latitude, busLocation.longitude);
     if (distance > 300) {
-      return res.status(403).json({ error: 'You are not allowed to connect. Please get near the bus.' });
+      return res.status(403).json({ error: 'No tienes permitido conectarte. Por favor, acércate al autobús.' });
     }
 
     bus.driverId = req.body.Devicetoken;
     bus.avilable = true;
     await bus.save();
 
-    res.status(200).json({ message: 'Driver authenticated successfully', bus });
+    res.status(200).json({ message: 'Conductor autenticado con éxito.', bus });
   } catch (error) {
     console.error('Error authenticating driver:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 

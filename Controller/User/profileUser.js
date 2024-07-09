@@ -10,7 +10,7 @@ const updateProfile = async (req, res) => {
 
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'Usuario no encontrado.' });
     }
 
     if (name) user.name = name;
@@ -20,7 +20,7 @@ const updateProfile = async (req, res) => {
     if (currentPassword && updatedPassword) {
       const isValid = isPasswordValid(currentPassword, user.password);
       if (!isValid) {
-        return res.status(401).json({ error: 'Invalid current password' });
+        return res.status(401).json({ error: 'Contraseña actual actual inválida.' });
       }
 
       const hashedPassword = generatePasswordHash(updatedPassword);
@@ -37,16 +37,16 @@ const updateProfile = async (req, res) => {
         user.profileUrl = imageUrl;
       } catch (error) {
         console.error('Error uploading profile picture:', error);
-        return res.status(500).json({ error: 'Failed to upload profile picture' });
+        return res.status(500).json({ error: 'Error al subir la foto de perfil.' });
       }
     }
 
     await user.save();
 
-    res.status(200).json({ message: 'Profile updated successfully' });
+    res.status(200).json({ message: 'Perfil actualizado con éxito.' });
   } catch (error) {
     console.error('Error updating profile:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 
@@ -57,7 +57,7 @@ const getUser = async (req, res) => {
     // Find the user by ID
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'Usuario no encontrado.' });
     }
 
     // Exclude sensitive fields from the response
@@ -66,7 +66,7 @@ const getUser = async (req, res) => {
     res.status(200).json(userInfo);
   } catch (error) {
     console.error('Error getting user:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 

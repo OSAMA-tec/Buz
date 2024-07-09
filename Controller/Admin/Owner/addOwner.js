@@ -143,7 +143,7 @@ const addOwner = async (req, res) => {
         res.status(201).json({ message: 'Bus owner added successfully' });
     } catch (error) {
         console.error('Error adding bus owner:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Error interno del servidor' });
     }
 };
 

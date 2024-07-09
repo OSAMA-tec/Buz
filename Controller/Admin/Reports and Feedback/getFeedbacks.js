@@ -35,7 +35,7 @@ const getAllFeedback = async (req, res) => {
     res.status(200).json(populatedFeedback);
   } catch (error) {
     console.error('Error retrieving feedback:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 

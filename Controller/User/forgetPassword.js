@@ -9,7 +9,7 @@ const forgotPassword = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'Usuario no encontrado.' });
     }
 
     const otp = Math.floor(1000 + Math.random() * 9000).toString();
@@ -71,10 +71,10 @@ const forgotPassword = async (req, res) => {
 
     await sendEmail({ to: email, subject: emailSubject, html: emailHtml });
 
-    res.status(200).json({ message: 'OTP sent successfully' });
+    res.status(200).json({ message: 'OTP enviado con éxito.' });
   } catch (error) {
     console.error('Error during forgot password:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 
@@ -84,30 +84,30 @@ const verifyOTP = async (req, res) => {
     const { email, otp } = req.body;
 
     if (!email || !otp) {
-      return res.status(400).json({ error: 'Email and OTP are required' });
+      return res.status(400).json({ error: 'Se requieren el correo electrónico y el OTP. '});
     }
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'Usuario no encontrado.' });
     }
 
     if (!user.otp) {
-      return res.status(400).json({ error: 'No OTP found for the user' });
+      return res.status(400).json({ error: 'No se encontró OTP para el usuario.' });
     }
 
     if (user.otp !== otp) {
-      return res.status(400).json({ error: 'Invalid OTP' });
+      return res.status(400).json({ error: 'OTP inválido.' });
     }
 
     user.otpVerified = true;
     user.otp = null;
     await user.save();
 
-    res.status(200).json({ message: 'OTP verified successfully' });
+    res.status(200).json({ message: 'OTP verificado con éxito.' });
   } catch (error) {
     console.error('Error during OTP verification:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 
@@ -119,11 +119,11 @@ const updatePassword = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'Usuario no encontrado.' });
     }
 
     if (!user.otpVerified) {
-      return res.status(400).json({ error: 'OTP not verified' });
+      return res.status(400).json({ error: 'OTP no verificado' });
     }
 
     const hashedPassword = generatePasswordHash(password);
@@ -131,10 +131,10 @@ const updatePassword = async (req, res) => {
     user.password = hashedPassword;
     await user.save();
 
-    res.status(200).json({ message: 'Password updated successfully' });
+    res.status(200).json({ message: 'Contraseña actualizada con éxito.' });
   } catch (error) {
     console.error('Error during password update:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 

@@ -26,12 +26,12 @@ const updateOwner = async (req, res) => {
 
     const ownerBus = await OwnerBus.findOne({userId:ownerId });
     if (!ownerBus) {
-      return res.status(404).json({ error: 'Bus owner not found' });
+      return res.status(404).json({ error: 'Bus Propietario no encontrado.' });
     }
 
     const owner = await User.findById(ownerBus.userId);
     if (!owner || owner.role !== 'owner') {
-      return res.status(404).json({ error: 'User not found or not a bus owner' });
+      return res.status(404).json({ error: 'Usuario no encontrado. or not a bus owner' });
     }
 
     owner.name = name || owner.name;
@@ -116,7 +116,7 @@ const updateOwner = async (req, res) => {
     res.status(200).json({ message: 'Bus owner updated successfully' });
   } catch (error) {
     console.error('Error updating bus owner:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 

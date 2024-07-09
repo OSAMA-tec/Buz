@@ -36,7 +36,7 @@ const getAllBusesWithDetails = async (req, res) => {
         res.status(200).json(busDetails);
     } catch (error) {
         console.error('Error fetching bus details:', error);
-        res.status(500).json({ message: 'Internal Server Error' });
+        res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
 

@@ -30,7 +30,7 @@ const getAllBuses = async (req, res) => {
     res.status(200).json(buses);
   } catch (error) {
     console.error('Error getting buses:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 

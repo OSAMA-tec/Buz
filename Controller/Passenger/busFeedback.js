@@ -9,7 +9,7 @@ const createFeedback = async (req, res) => {
 
     const bus = await Bus.findById(busId);
     if (!bus) {
-      return res.status(404).json({ error: 'Bus not found' });
+      return res.status(404).json({ error: 'Autobús no encontrado.' });
     }
 
     const newFeedback = new Feedback({
@@ -27,7 +27,7 @@ const createFeedback = async (req, res) => {
     res.status(201).json(savedFeedback);
   } catch (error) {
     console.error('Error creating feedback:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 
@@ -37,7 +37,7 @@ const getFeedbackByBus = async (req, res) => {
 
     const bus = await Bus.findById(busId);
     if (!bus) {
-      return res.status(404).json({ error: 'Bus not found' });
+      return res.status(404).json({ error: 'Autobús no encontrado.' });
     }
 
     const feedback = await Feedback.find({ driverId: bus.driverId });
@@ -61,7 +61,7 @@ const getFeedbackByBus = async (req, res) => {
     res.status(200).json(populatedFeedback);
   } catch (error) {
     console.error('Error retrieving feedback:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 

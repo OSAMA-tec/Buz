@@ -4,7 +4,7 @@ const updateRoute = async (req, res) => {
   try {
     // Check if the user has the 'owner' role
     if (req.user.role !== 'owner') {
-      return res.status(403).json({ error: 'You are not authorized to update routes' });
+      return res.status(403).json({ error: 'No estás autorizado para actualizar rutas.' });
     }
 
     const { 
@@ -16,12 +16,12 @@ const updateRoute = async (req, res) => {
     } = req.body;
 
     if (!routeId) {
-      return res.status(400).json({ error: 'Route ID is required' });
+      return res.status(400).json({ error: 'Se requiere el ID de la ruta.' });
     }
 
     const route = await Route.findById(routeId);
     if (!route) {
-      return res.status(404).json({ error: 'Route not found' });
+      return res.status(404).json({ error: 'Ruta no encontrada.' });
     }
 
     if (origin && originlon && originlat) {
@@ -32,7 +32,7 @@ const updateRoute = async (req, res) => {
     }
     if (stops && stopslon && stopslat) {
       if (stops.length !== stopslon.length || stops.length !== stopslat.length) {
-        return res.status(400).json({ error: 'Stops and their coordinates must have the same length' });
+        return res.status(400).json({ error: 'Las paradas y sus coordenadas deben tener la misma longitud.' });
       }
       route.stops = stops.map((stop, index) => ({
         name: stop,
@@ -51,7 +51,7 @@ const updateRoute = async (req, res) => {
     res.status(200).json(updatedRoute);
   } catch (error) {
     console.error('Error updating route:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 

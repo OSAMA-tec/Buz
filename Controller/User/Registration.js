@@ -84,10 +84,10 @@ const signup = async (req, res) => {
 
     await sendEmail({ to: email, subject: emailSubject, html: emailHtml });
 
-    res.status(201).json({ message: 'User created successfully. Please verify your account using the OTP sent to your email.' });
+    res.status(201).json({ message: 'Usuario creado con éxito. Por favor, verifica tu cuenta usando el OTP enviado a tu correo electrónico.' });
   } catch (error) {
     console.error('Error during signup:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 
@@ -105,7 +105,7 @@ const signin = async (req, res) => {
 
     if (!user.otpVerified && user.otpPurpose === 'signup') {
       await User.deleteOne({ _id: user._id });
-      return res.status(401).json({ error: 'OTP not verified. Account deleted.' });
+      return res.status(401).json({ error: 'OTP no verificado.' });
     }
 
     if (user.otpPurpose === 'forgotPassword') {
@@ -116,7 +116,7 @@ const signin = async (req, res) => {
     }
     const isValid = isPasswordValid(password, user.password);
     if (!isValid) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+      return res.status(401).json({ error: 'Credenciales inválidas.' });
     }
 
     let token;
@@ -133,10 +133,10 @@ const signin = async (req, res) => {
       token = jwt.sign(payload, process.env.secretUser, options);
     }
 
-    res.status(200).json({ message: 'Signin successful', token,role:user.role });
+    res.status(200).json({ message: 'Inicio de sesión exitoso.', token,role:user.role });
   } catch (error) {
     console.error('Error during signin:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 module.exports = { signup, signin };

@@ -5,7 +5,7 @@ const { uploadImageToFirebase } = require('../../../Firebase/uploadImage');
 const updateBus = async (req, res) => {
   try {
     if (req.user.role !== 'owner') {
-      return res.status(403).json({ error: 'You are not authorized to update buses' });
+      return res.status(403).json({ error: 'No estás autorizado para actualizar autobuses.' });
     }
 
     const {
@@ -30,7 +30,7 @@ const updateBus = async (req, res) => {
 
     // Validate required fields
     if (!busId) {
-      return res.status(400).json({ error: 'Bus ID is required' });
+      return res.status(400).json({ error: 'Se requiere el ID del autobús.' });
     }
     console.log(req.body)
     // Parse the amenities object from the form data
@@ -40,7 +40,7 @@ const updateBus = async (req, res) => {
         amenities = JSON.parse(req.body.amenities);
       } catch (error) {
         console.error('Error parsing amenities:', error);
-        return res.status(400).json({ error: 'Invalid amenities format' });
+        return res.status(400).json({ error: 'Formato de amenities no válido.' });
       }
     }
 
@@ -52,12 +52,12 @@ const updateBus = async (req, res) => {
 
     // Validate stops array lengths
     if (stops.length !== stopslon.length || stops.length !== stopslat.length) {
-      return res.status(400).json({ error: 'Stops arrays must have the same length' });
+      return res.status(400).json({ error: 'Los arreglos de paradas deben tener la misma longitud.' });
     }
 
     const bus = await Bus.findById(busId);
     if (!bus) {
-      return res.status(404).json({ error: 'Bus not found' });
+      return res.status(404).json({ error: 'Autobús no encontrado.' });
     }
 
     const routeId = bus.routeId;
@@ -82,7 +82,7 @@ const updateBus = async (req, res) => {
     if (estimatedTravelTime !== undefined) {
       const parsedEstimatedTravelTime = parseInt(estimatedTravelTime, 10);
       if (isNaN(parsedEstimatedTravelTime)) {
-        return res.status(400).json({ error: 'Invalid estimatedTravelTime value' });
+        return res.status(400).json({ error: 'Valor de estimatedTravelTime no válido.' });
       }
       bus.estimatedTravelTime = parsedEstimatedTravelTime;
     }
@@ -98,8 +98,8 @@ const updateBus = async (req, res) => {
         const logoUrl = await uploadImageToFirebase(base64Image, contentType);
         bus.logoUrl = logoUrl;
       } catch (error) {
-        console.error('Error uploading bus logo:', error);
-        return res.status(500).json({ error: 'Failed to upload bus logo' });
+        console.error('Error al subir el logo del autobús:', error);
+        return res.status(500).json({ error: 'Error al subir el logo del autobús.' });
       }
     }
 
@@ -107,7 +107,7 @@ const updateBus = async (req, res) => {
     if (stops && Array.isArray(stops) && stops.length > 0 && routeId) {
       const route = await Route.findById(routeId);
       if (!route) {
-        return res.status(404).json({ error: 'Route not found' });
+        return res.status(404).json({ error: 'Ruta no encontrada.' });
       }
 
       route.stops = stops.map((stop, index) => ({
@@ -119,8 +119,8 @@ const updateBus = async (req, res) => {
       try {
         await route.save();
       } catch (error) {
-        console.error('Error updating route:', error);
-        return res.status(500).json({ error: 'Failed to update route' });
+        console.error('Error al actualizar la ruta:', error);
+        return res.status(500).json({ error: 'Error al actualizar la ruta.' });
       }
     }
 
@@ -129,11 +129,11 @@ const updateBus = async (req, res) => {
       res.status(200).json(updatedBus);
     } catch (error) {
       console.error('Error updating bus:', error);
-      res.status(500).json({ error: 'Failed to update bus' });
+      res.status(500).json({ error: 'Error al actualizar el autobús.' });
     }
   } catch (error) {
     console.error('Error updating bus:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor.' });
   }
 };
 

@@ -21,7 +21,7 @@ const createNotification = async (req, res) => {
     res.status(201).json({ message: 'Notification created successfully' });
   } catch (error) {
     console.error('Error creating notification:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 
@@ -38,7 +38,7 @@ const getAllNotifications = async (req, res) => {
     res.status(200).json(notification.notifications);
   } catch (error) {
     console.error('Error getting notifications:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 
@@ -67,7 +67,7 @@ const updateNotificationToken = async (req, res) => {
     res.status(200).json({ message: 'Notification token updated successfully' });
   } catch (error) {
     console.error('Error updating notification token:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 

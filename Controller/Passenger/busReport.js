@@ -18,7 +18,7 @@ const submitReport = async (req, res) => {
     res.status(201).json(savedReport);
   } catch (error) {
     console.error('Error submitting report:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 
@@ -31,10 +31,10 @@ const updateReport = async (req, res) => {
     const report = await Report.findById(reportId);
 
     if (!report) {
-      return res.status(404).json({ error: 'Report not found' });
+      return res.status(404).json({ error: 'Informe no encontrado' });
     }
     if (report.passengerId !== req.user._id) {
-        return res.status(403).json({ error: 'You are not authorized to update this report' });
+        return res.status(403).json({ error: 'No estás autorizado para actualizar este informe.' });
       }
   
     if (busId) report.busId = busId;
@@ -48,7 +48,7 @@ const updateReport = async (req, res) => {
     res.status(200).json(updatedReport);
   } catch (error) {
     console.error('Error updating report:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 

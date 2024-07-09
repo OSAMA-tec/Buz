@@ -9,7 +9,7 @@ const getBusesByRoute = async (req, res) => {
     // Check if the user exists
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ error: 'User not found' });
+      return res.status(404).json({ error: 'Usuario no encontrado.' });
     }
 
     const originLowerCase = origin.toLowerCase();
@@ -24,7 +24,7 @@ const getBusesByRoute = async (req, res) => {
     });
 
     if (routes.length === 0) {
-      return res.status(404).json({ error: 'No routes found for the given origin and destination' });
+      return res.status(404).json({ error: 'No se encontraron rutas para el origen y destino dados.' });
     }
 
     // Retrieve the bus details for each route
@@ -56,7 +56,7 @@ const getBusesByRoute = async (req, res) => {
     res.status(200).json({ buses: flattenedBusDetails });
   } catch (error) {
     console.error('Error retrieving buses:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 module.exports = { getBusesByRoute };

@@ -9,7 +9,7 @@ const { ObjectId } = mongoose.Types;
 const addBus = async (req, res) => {
   try {
     if (req.user.role !== 'owner') {
-      return res.status(403).json({ error: 'You are not authorized to add buses' });
+      return res.status(403).json({ error: 'No estás autorizado para añadir autobuses.' });
     }
 
     const {
@@ -38,7 +38,7 @@ const addBus = async (req, res) => {
         amenities = req.body.amenities;
       } catch (error) {
         console.error('Error parsing amenities:', error);
-        return res.status(400).json({ error: 'Invalid amenities format' });
+        return res.status(400).json({ error: 'Formato de amenities no válido.' });
       }
     }
 
@@ -103,12 +103,12 @@ const addBus = async (req, res) => {
     // Convert estimatedTravelTime to a number
     const parsedEstimatedTravelTime = parseInt(estimatedTravelTime, 10);
     if (isNaN(parsedEstimatedTravelTime)) {
-      return res.status(400).json({ error: 'Invalid estimatedTravelTime value' });
+      return res.status(400).json({ error: 'Valor de estimatedTravelTime no válido.' });
     }
 
     const existingBus = await Bus.findOne({ number });
     if (existingBus) {
-      return res.status(400).json({ error: 'Bus number already exists' });
+      return res.status(400).json({ error: 'El número de autobús ya existe' });
     }
 
     let logoUrl = '';
@@ -119,14 +119,14 @@ const addBus = async (req, res) => {
       try {
         logoUrl = await uploadImageToFirebase(base64Image, contentType);
       } catch (error) {
-        console.error('Error uploading bus logo:', error);
-        return res.status(500).json({ error: 'Failed to upload bus logo' });
+        console.error('Error al subir el logo del autobús', error);
+        return res.status(500).json({ error: 'Error al subir el logo del autobús.' });
       }
     }
 
     const ownerBus = await OwnerBus.findOne({ userId: req.user._id });
     if (!ownerBus) {
-      return res.status(404).json({ error: 'Owner not found' });
+      return res.status(404).json({ error: 'Propietario no encontrado.' });
     }
 
     // Check if stops are provided
@@ -175,8 +175,8 @@ const addBus = async (req, res) => {
 
     res.status(201).json(savedBus);
   } catch (error) {
-    console.error('Error adding bus:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Error al añadir el autobús', error);
+    res.status(500).json({ error: 'Error interno del servidor.' });
   }
 };
 
@@ -184,7 +184,7 @@ const addBus = async (req, res) => {
 const getAllBusesByOwner = async (req, res) => {
   try {
     if (req.user.role !== 'owner') {
-      return res.status(403).json({ error: 'You are not authorized to access this resource' });
+      return res.status(403).json({ error: 'No estás autorizado para acceder a este recurso' });
     }
 
     const userId = req.user._id;
@@ -192,7 +192,7 @@ const getAllBusesByOwner = async (req, res) => {
     const owner = await OwnerBus.findOne({ userId });
 
     if (!owner) {
-      return res.status(404).json({ error: 'Owner not found' });
+      return res.status(404).json({ error: 'Propietario no encontrado' });
     }
 
     const ownerId = owner._id;
@@ -226,8 +226,8 @@ const getAllBusesByOwner = async (req, res) => {
       totalRunningBusesCount
     });
   } catch (error) {
-    console.error('Error getting buses:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    console.error('Error al obtener los autobuses', error);
+    res.status(500).json({ error: 'Error interno del servidor.' });
   }
 };
 

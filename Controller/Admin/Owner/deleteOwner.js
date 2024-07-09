@@ -14,12 +14,12 @@ const deleteOwner = async (req, res) => {
 
         const ownerBus = await OwnerBus.findOne({ userId:ownerId });
         if (!ownerBus) {
-            return res.status(404).json({ error: 'Bus owner not found' });
+            return res.status(404).json({ error: 'Bus Propietario no encontrado.' });
         }
 
         const owner = await User.findById(ownerBus.userId);
         if (!owner || owner.role !== 'owner') {
-            return res.status(404).json({ error: 'User not found or not a bus owner' });
+            return res.status(404).json({ error: 'Usuario no encontrado. or not a bus owner' });
         }
         await User.findByIdAndDelete(owner._id);
         await OwnerBus.findByIdAndDelete(ownerBus._id);
@@ -27,7 +27,7 @@ const deleteOwner = async (req, res) => {
         res.status(200).json({ message: 'Bus owner deleted successfully' });
     } catch (error) {
         console.error('Error deleting bus owner:', error);
-        res.status(500).json({ error: 'Internal server error' });
+        res.status(500).json({ error: 'Error interno del servidor' });
     }
 };
 const getOwner = async (req, res) => {
@@ -61,7 +61,7 @@ const getOwner = async (req, res) => {
       res.status(200).json({ message: 'Bus owner details retrieved successfully', ownerDetails });
     } catch (error) {
       console.error('Error retrieving bus owner details:', error);
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ error: 'Error interno del servidor' });
     }
   };
 module.exports = { deleteOwner, getOwner };
