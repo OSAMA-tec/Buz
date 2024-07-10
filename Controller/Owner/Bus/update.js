@@ -27,7 +27,7 @@ const updateBus = async (req, res) => {
       estimatedTravelTime,
       waypoints
     } = req.body;
-
+    console.log(req.body)
     // Validate required fields
     if (!busId) {
       return res.status(400).json({ error: 'Se requiere el ID del autobús.' });
