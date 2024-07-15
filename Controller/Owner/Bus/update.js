@@ -32,7 +32,6 @@ const updateBus = async (req, res) => {
       waypoints
     } = req.body;
 
-    // Parse the amenities object from the form data
     let amenities = {};
     if (req.body.amenities) {
       try {
@@ -43,7 +42,6 @@ const updateBus = async (req, res) => {
       }
     }
 
-    // Parse the stops array from the form data
     const stops = req.body.stops ? JSON.parse(req.body.stops) : [];
     const stopslon = req.body.stopslon ? JSON.parse(req.body.stopslon) : [];
     const stopslat = req.body.stopslat ? JSON.parse(req.body.stopslat) : [];
@@ -62,8 +60,8 @@ const updateBus = async (req, res) => {
     if (type) bus.type = type;
     if (capacity !== undefined) bus.capacity = capacity;
     if (busType) bus.busType = busType;
+    bus.amenities = amenities;
 
-    // Convert estimatedTravelTime to a number
     if (estimatedTravelTime !== undefined) {
       const parsedEstimatedTravelTime = parseInt(estimatedTravelTime, 10);
       if (isNaN(parsedEstimatedTravelTime)) {
@@ -71,8 +69,6 @@ const updateBus = async (req, res) => {
       }
       bus.estimatedTravelTime = parsedEstimatedTravelTime;
     }
-
-    bus.amenities = amenities;
 
     let logoUrl = bus.logoUrl;
     if (req.file) {
@@ -93,7 +89,6 @@ const updateBus = async (req, res) => {
       return res.status(404).json({ error: 'Propietario no encontrado.' });
     }
 
-    // Update or create the route
     let routeData = null;
     if (stops && Array.isArray(stops) && stops.length > 0) {
       const routeUpdate = {
@@ -121,7 +116,6 @@ const updateBus = async (req, res) => {
 
     const updatedBus = await bus.save();
 
-    // Update location
     if (latitude !== undefined && longitude !== undefined) {
       await Location.findOneAndUpdate(
         { busId: bus._id },
