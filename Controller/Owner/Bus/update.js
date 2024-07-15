@@ -31,7 +31,7 @@ const updateBus = async (req, res) => {
       estimatedTravelTime,
       waypoints
     } = req.body;
-
+    console.log(req.body)
     let amenities = {};
     if (req.body.amenities) {
       try {

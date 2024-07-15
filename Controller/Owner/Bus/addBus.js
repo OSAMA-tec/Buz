@@ -30,7 +30,7 @@ const addBus = async (req, res) => {
       estimatedTravelTime,
       waypoints
     } = req.body;
-
+    console.log(req.body)
     // Parse the amenities object from the form data
     let amenities = {};
     if (req.body.amenities) {
