@@ -1,6 +1,10 @@
 const { Bus } = require('../../../Model/Bus');
 const { Route } = require('../../../Model/route');
+const { Location } = require('../../../Model/location');
+const { OwnerBus } = require('../../../Model/Owner');
 const { uploadImageToFirebase } = require('../../../Firebase/uploadImage');
+const mongoose = require('mongoose');
+const { ObjectId } = mongoose.Types;
 
 const updateBus = async (req, res) => {
   try {
@@ -27,17 +31,12 @@ const updateBus = async (req, res) => {
       estimatedTravelTime,
       waypoints
     } = req.body;
-    console.log(req.body)
-    // Validate required fields
-    if (!busId) {
-      return res.status(400).json({ error: 'Se requiere el ID del autobús.' });
-    }
-    console.log(req.body)
+
     // Parse the amenities object from the form data
     let amenities = {};
     if (req.body.amenities) {
       try {
-        amenities = JSON.parse(req.body.amenities);
+        amenities = req.body.amenities;
       } catch (error) {
         console.error('Error parsing amenities:', error);
         return res.status(400).json({ error: 'Formato de amenities no válido.' });
@@ -48,11 +47,9 @@ const updateBus = async (req, res) => {
     const stops = req.body.stops ? JSON.parse(req.body.stops) : [];
     const stopslon = req.body.stopslon ? JSON.parse(req.body.stopslon) : [];
     const stopslat = req.body.stopslat ? JSON.parse(req.body.stopslat) : [];
-    console.log(stops)
 
-    // Validate stops array lengths
-    if (stops.length !== stopslon.length || stops.length !== stopslat.length) {
-      return res.status(400).json({ error: 'Los arreglos de paradas deben tener la misma longitud.' });
+    if (!busId) {
+      return res.status(400).json({ error: 'Se requiere el ID del autobús.' });
     }
 
     const bus = await Bus.findById(busId);
@@ -60,23 +57,11 @@ const updateBus = async (req, res) => {
       return res.status(404).json({ error: 'Autobús no encontrado.' });
     }
 
-    const routeId = bus.routeId;
-
     if (name) bus.name = name;
     if (number) bus.number = number;
     if (type) bus.type = type;
     if (capacity !== undefined) bus.capacity = capacity;
-    if (latitude) bus.latitude = latitude;
-    if (longitude) bus.longitude = longitude;
     if (busType) bus.busType = busType;
-    if (origin) bus.origin = origin;
-    if (originlon !== undefined) bus.originlon = originlon;
-    if (originlat !== undefined) bus.originlat = originlat;
-    if (destination) bus.destination = destination;
-    if (destinationlon !== undefined) bus.destinationlon = destinationlon;
-    if (destinationlat !== undefined) bus.destinationlat = destinationlat;
-    if (distance !== undefined) bus.distance = distance;
-    if (waypoints) bus.waypoints = waypoints;
 
     // Convert estimatedTravelTime to a number
     if (estimatedTravelTime !== undefined) {
@@ -89,50 +74,65 @@ const updateBus = async (req, res) => {
 
     bus.amenities = amenities;
 
+    let logoUrl = bus.logoUrl;
     if (req.file) {
       const busLogo = req.file;
       const base64Image = busLogo.buffer.toString('base64');
       const contentType = busLogo.mimetype;
-
       try {
-        const logoUrl = await uploadImageToFirebase(base64Image, contentType);
+        logoUrl = await uploadImageToFirebase(base64Image, contentType);
         bus.logoUrl = logoUrl;
       } catch (error) {
-        console.error('Error al subir el logo del autobús:', error);
+        console.error('Error al subir el logo del autobús', error);
         return res.status(500).json({ error: 'Error al subir el logo del autobús.' });
       }
     }
 
-    // Update the route if stops are provided and routeId exists
-    if (stops && Array.isArray(stops) && stops.length > 0 && routeId) {
-      const route = await Route.findById(routeId);
-      if (!route) {
-        return res.status(404).json({ error: 'Ruta no encontrada.' });
-      }
+    const ownerBus = await OwnerBus.findOne({ userId: req.user._id });
+    if (!ownerBus) {
+      return res.status(404).json({ error: 'Propietario no encontrado.' });
+    }
 
-      route.stops = stops.map((stop, index) => ({
-        name: stop,
-        longitude: stopslon[index],
-        latitude: stopslat[index],
-      }));
+    // Update or create the route
+    let routeData = null;
+    if (stops && Array.isArray(stops) && stops.length > 0) {
+      const routeUpdate = {
+        origin: { name: origin, longitude: originlon, latitude: originlat },
+        destination: { name: destination, longitude: destinationlon, latitude: destinationlat },
+        stops: stops.map((stop, index) => ({
+          name: stop,
+          longitude: stopslon[index],
+          latitude: stopslat[index]
+        })),
+        distance,
+        estimatedTravelTime: bus.estimatedTravelTime,
+        waypoints,
+        ownerId: ownerBus._id,
+      };
 
-      try {
-        await route.save();
-      } catch (error) {
-        console.error('Error al actualizar la ruta:', error);
-        return res.status(500).json({ error: 'Error al actualizar la ruta.' });
+      if (bus.routeId) {
+        routeData = await Route.findByIdAndUpdate(bus.routeId, routeUpdate, { new: true });
+      } else {
+        const newRoute = new Route(routeUpdate);
+        routeData = await newRoute.save();
+        bus.routeId = routeData._id;
       }
     }
 
-    try {
-      const updatedBus = await bus.save();
-      res.status(200).json(updatedBus);
-    } catch (error) {
-      console.error('Error updating bus:', error);
-      res.status(500).json({ error: 'Error al actualizar el autobús.' });
+    const updatedBus = await bus.save();
+
+    // Update location
+    if (latitude !== undefined && longitude !== undefined) {
+      await Location.findOneAndUpdate(
+        { busId: bus._id },
+        { latitude, longitude },
+        { upsert: true, new: true }
+      );
     }
+
+    res.status(200).json(updatedBus);
   } catch (error) {
-    console.error('Error updating bus:', error);
+    console.error('Error al actualizar el autobús', error);
     res.status(500).json({ error: 'Error interno del servidor.' });
   }
 };
