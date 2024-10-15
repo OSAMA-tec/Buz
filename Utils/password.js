@@ -10,3 +10,4 @@ const isPasswordValid = (password, hash) => {
 };
 
 module.exports = { generatePasswordHash, isPasswordValid };
+//ydzz
