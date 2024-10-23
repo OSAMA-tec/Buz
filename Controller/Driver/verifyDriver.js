@@ -38,10 +38,14 @@ const verifyDriver = async (req, res) => {
       await bus.save();
       return res.status(200).json({ message: 'Conductor autenticado con éxito.', bus });
     }
-
+    console.log(latitude)
+    console.log(longitude)
+    console.log(busLocation.latitude)
+    console.log(busLocation.longitude)
     const distance = calculateDistance(latitude, longitude, busLocation.latitude, busLocation.longitude);
+    console.log(distance)
     if (distance > 300) {
-      return res.status(403).json({ error: 'No tienes permitido conectarte. Por favor, acércate al autobús.' });
+      return res.status(403).json({ error: 'No tienes permitido conectarte. Por favor, acércate al autobús. your' });
     }
 
     bus.driverId = req.body.Devicetoken;

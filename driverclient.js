@@ -47,3 +47,5 @@ updateLocation(37.7749, -122.4194);
 
 // Disconnect the driver after 10hours seconds
 setTimeout(disconnectDriver, 36000000);
+
+

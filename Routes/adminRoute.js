@@ -33,7 +33,7 @@ router.post('/ads', upload.fields([{ name: 'pic' }, { name: 'video' }]),verifyTo
 router.put('/ads', upload.fields([{ name: 'pic' }, { name: 'video' }]),verifyTokenAdmin, updateAd);
 router.delete('/ads',verifyTokenAdmin,deleteAd);
 router.post('/ads/count',verifyTokenUser, incrementClickCount);
-router.get('/ads',verifyTokenAdmin, getAdById);
+router.get('/ads', getAdById);
 
 
 //Owner
